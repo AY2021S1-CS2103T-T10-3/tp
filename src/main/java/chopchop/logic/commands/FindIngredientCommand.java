@@ -3,6 +3,7 @@ package chopchop.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import chopchop.commons.core.Messages;
+import chopchop.logic.history.History;
 import chopchop.model.Model;
 import chopchop.model.attributes.NameContainsKeywordsPredicate;
 
@@ -31,7 +32,7 @@ public class FindIngredientCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model, History history) {
         requireNonNull(model);
         model.updateFilteredIngredientList(predicate);
         return new CommandResult(String.format(Messages.MESSAGE_INGREDIENTS_LISTED_OVERVIEW,

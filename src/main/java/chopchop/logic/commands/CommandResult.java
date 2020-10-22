@@ -8,7 +8,6 @@ import java.util.Objects;
  * Represents the result of a command execution.
  */
 public class CommandResult {
-
     private final String feedbackToUser;
 
     /** Help information should be shown to the user. */
@@ -35,37 +34,28 @@ public class CommandResult {
     }
 
     public String getFeedbackToUser() {
-        return feedbackToUser;
+        return this.feedbackToUser;
     }
 
     public boolean isShowHelp() {
-        return showHelp;
+        return this.showHelp;
     }
 
     public boolean isExit() {
-        return exit;
+        return this.exit;
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof CommandResult)) {
-            return false;
-        }
-
-        CommandResult otherCommandResult = (CommandResult) other;
-        return feedbackToUser.equals(otherCommandResult.feedbackToUser)
-                && showHelp == otherCommandResult.showHelp
-                && exit == otherCommandResult.exit;
+        return other == this
+                || (other instanceof CommandResult
+                && this.feedbackToUser.equals(((CommandResult) other).feedbackToUser)
+                && this.showHelp == ((CommandResult) other).showHelp
+                && this.exit == ((CommandResult) other).exit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit);
+        return Objects.hash(this.feedbackToUser, this.showHelp, this.exit);
     }
-
 }

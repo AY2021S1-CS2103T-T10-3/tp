@@ -2,6 +2,7 @@ package chopchop.model.attributes.units;
 
 import chopchop.util.Result;
 import chopchop.model.attributes.Quantity;
+import chopchop.model.exceptions.IncompatibleIngredientsException;
 
 /**
  * This class represents a quantity of mass, eg. grams, kilograms, etc. For the purposes of this class,
@@ -9,7 +10,6 @@ import chopchop.model.attributes.Quantity;
  * ingredients).
  */
 public class Mass implements Quantity {
-
     private final double value;
     private final double ratio;
 
@@ -39,8 +39,7 @@ public class Mass implements Quantity {
     }
 
     @Override
-    public Result<Quantity> add(Quantity qty) {
-
+    public Result<Mass> add(Quantity qty) {
         if (!(qty instanceof Mass)) {
             return Result.error("cannot add '%s' to '%s' (incompatible units)", qty, this);
         } else {
@@ -49,6 +48,26 @@ public class Mass implements Quantity {
 
             return Result.of(new Mass(newval, this.ratio));
         }
+    }
+
+    @Override
+    public Mass negate() {
+        return new Mass(-this.value, this.ratio);
+    }
+
+    @Override
+    public double getValue() {
+        return this.value;
+    }
+
+    @Override
+    public int compareTo(Quantity other) {
+        if (!(other instanceof Mass)) {
+            throw new IncompatibleIngredientsException(
+                    String.format("cannot compare '%s' with '%s' (incompatible units)", other, this));
+        }
+
+        return Double.compare(this.value * this.ratio, ((Mass) other).value * ((Mass) other).ratio);
     }
 
     @Override
@@ -85,7 +104,7 @@ public class Mass implements Quantity {
      * @return      the mass quantity, if the unit was valid.
      */
     public static Result<Quantity> of(double value, String unit) {
-        switch (unit) {
+        switch (unit.toLowerCase()) {
         case "mg":  return Result.of(milligrams(value));
         case "g":   return Result.of(grams(value));
         case "kg":  return Result.of(kilograms(value));

@@ -2,9 +2,11 @@
 
 package chopchop.logic.parser.commands;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 
+import chopchop.model.attributes.Quantity;
 import chopchop.util.Result;
 import chopchop.util.Strings;
 
@@ -20,28 +22,19 @@ import static chopchop.logic.parser.commands.CommonParser.getCommandTarget;
 import static chopchop.logic.parser.commands.CommonParser.getFirstUnknownArgument;
 
 public class DeleteCommandParser {
-
     private static final String commandName = Strings.COMMAND_DELETE;
 
     /**
      * Parses a 'delete' command. Syntax(es):
      * {@code delete recipe REF}
-     * {@code delete ingredient REF}
+     * {@code delete ingredient REF [/qty QUANTITY]}
      *
      * @param args the parsed command arguments from the {@code CommandParser}.
      * @return     a DeleteCommand, if the input was valid.
      */
     public static Result<? extends Command> parseDeleteCommand(CommandArguments args) {
-
         if (!args.getCommand().equals(commandName)) {
             return Result.error("invalid command '%s' (expected '%s')", args.getCommand(), commandName);
-        }
-
-        // we expect no named arguments
-        Optional<ArgName> foo;
-        if ((foo = getFirstUnknownArgument(args, new ArrayList<>())).isPresent()) {
-            return Result.error("'delete' command doesn't support '%s'\n%s",
-                foo.get(), DeleteRecipeCommand.MESSAGE_USAGE);
         }
 
         return getCommandTarget(args)
@@ -65,13 +58,28 @@ public class DeleteCommandParser {
 
     /**
      * Parses a 'delete ingredient' command. Syntax:
-     * {@code delete ingredient REF}
+     * {@code delete ingredient REF [/qty QUANTITY]}
      */
     private static Result<DeleteIngredientCommand> parseDeleteIngredientCommand(String name, CommandArguments args) {
         assert args.getCommand().equals(commandName);
 
+        Optional<ArgName> foo;
+        if ((foo = getFirstUnknownArgument(args, List.of(Strings.ARG_QUANTITY))).isPresent()) {
+            return Result.error("'delete ingredient' command doesn't support '%s'\n%s",
+                    foo.get(), DeleteIngredientCommand.MESSAGE_USAGE);
+        }
+
+        var qtys = args.getArgument(Strings.ARG_QUANTITY);
+        if (qtys.size() > 1) {
+            return Result.error("multiple quantities specified");
+        }
+
         return ItemReference.parse(name)
-            .map(DeleteIngredientCommand::new);
+            .then(ref -> Result.transpose(qtys
+                    .stream()
+                    .findFirst()
+                    .map(Quantity::parse))
+                    .map(qty -> new DeleteIngredientCommand(ref, qty)));
     }
 
     /**
@@ -80,6 +88,12 @@ public class DeleteCommandParser {
      */
     private static Result<DeleteRecipeCommand> parseDeleteRecipeCommand(String name, CommandArguments args) {
         assert args.getCommand().equals(commandName);
+
+        Optional<ArgName> foo;
+        if ((foo = getFirstUnknownArgument(args, new ArrayList<>())).isPresent()) {
+            return Result.error("'delete recipe' command doesn't support '%s'\n%s",
+                    foo.get(), DeleteRecipeCommand.MESSAGE_USAGE);
+        }
 
         return ItemReference.parse(name)
             .map(DeleteRecipeCommand::new);

@@ -6,6 +6,9 @@ import static chopchop.testutil.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import chopchop.logic.history.CommandHistory;
+import chopchop.logic.history.History;
 import chopchop.logic.parser.ItemReference;
 import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.model.EntryBook;
@@ -35,7 +38,7 @@ public class CommandTestUtil {
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
                                             Model expectedModel) {
         try {
-            CommandResult result = command.execute(actualModel);
+            CommandResult result = command.execute(actualModel, new HistoryStub());
             assertEquals(expectedCommandResult, result);
             assertEquals(expectedModel, actualModel);
         } catch (CommandException ce) {
@@ -65,7 +68,7 @@ public class CommandTestUtil {
         EntryBook<Ingredient> expectedIndBook = new EntryBook<>(actualModel.getIngredientBook());
         List<Ingredient> expectedFilteredList = new ArrayList<>(actualModel.getFilteredIngredientList());
 
-        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel, new HistoryStub()));
         assertEquals(expectedIndBook, actualModel.getIngredientBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredIngredientList());
     }
@@ -81,5 +84,30 @@ public class CommandTestUtil {
         model.updateFilteredIngredientList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredIngredientList().size());
+    }
+
+    /**
+     * A default history stub that have all of the methods failing.
+     */
+    public static class HistoryStub implements History {
+        @Override
+        public void add(CommandHistory command) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public CommandResult undo(Model model) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public CommandResult redo(Model model) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public String getHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }
