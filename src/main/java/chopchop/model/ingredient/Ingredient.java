@@ -67,8 +67,10 @@ public class Ingredient extends Entry {
      */
     public Ingredient(String name, TreeMap<Optional<ExpiryDate>, Quantity> sets, Set<Tag> tags) {
         super(name);
+
+        assert !sets.isEmpty();
         this.sets = sets;
-        this.tags = tags;
+        this.tags = Objects.requireNonNullElseGet(tags, HashSet::new);
     }
 
     public Quantity getQuantity() {
