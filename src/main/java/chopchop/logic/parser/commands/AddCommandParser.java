@@ -95,21 +95,20 @@ public class AddCommandParser {
 
         // looks weird, but basically this extracts the /qty and /expiry arguments (if present),
         // then constructs the command from it -- while returning any intermediate error messages.
-        try {
-            Optional<Set<String>> tagSet = tags.isEmpty() ? Optional.empty() : Optional.of(Set.copyOf(tags));
-            return Result.transpose(qtys
+        Optional<Set<String>> tagSet = tags.isEmpty()
+            ? Optional.empty()
+            : Optional.of(Set.copyOf(tags));
+
+        return Result.transpose(qtys
+            .stream()
+            .findFirst()
+            .map(Quantity::parse))
+            .then(qty -> Result.transpose(exps
                 .stream()
                 .findFirst()
-                .map(Quantity::parse))
-                .then(qty -> Result.transpose(exps
-                    .stream()
-                    .findFirst()
-                    .map(e -> Result.of(e)))
-                    .map(exp -> createAddIngredientCommand(name, qty, exp, tagSet))
-                );
-        } catch (Exception e) {
-            return Result.error(e.getMessage());
-        }
+                .map(e -> Result.of(e)))
+                .then(exp -> createAddIngredientCommand(name, qty, exp, tagSet))
+            );
     }
 
     /**
@@ -209,12 +208,16 @@ public class AddCommandParser {
     }
 
 
-    private static AddIngredientCommand createAddIngredientCommand(String name, Optional<Quantity> qty,
+    private static Result<AddIngredientCommand> createAddIngredientCommand(String name, Optional<Quantity> qty,
         Optional<String> expiry, Optional<Set<String>> tags) {
 
-        return new AddIngredientCommand(new Ingredient(name,
-            qty.orElse(Count.of(1)),
-            expiry.map(ExpiryDate::new).orElse(null),
-            tags.map(x->x.stream().map(Tag::new).collect(Collectors.toSet())).orElse(null)));
+        return Result.transpose(expiry
+            .map(ExpiryDate::of))
+            .map(exp -> {
+                var tagList = tags.map(x -> x.stream().map(Tag::new).collect(Collectors.toSet())).orElse(null);
+
+                return new AddIngredientCommand(new Ingredient(name,
+                    qty.orElse(Count.of(1)), exp.orElse(null), tagList));
+            });
     }
 }

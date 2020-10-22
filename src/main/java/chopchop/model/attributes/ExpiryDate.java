@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import chopchop.commons.util.Result;
+
 public class ExpiryDate implements Comparable<ExpiryDate> {
 
     public static final String MESSAGE_CONSTRAINTS =
@@ -39,6 +41,18 @@ public class ExpiryDate implements Comparable<ExpiryDate> {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns an expiry date from the given string, or an error message if it
+     * was in an invalid format.
+     */
+    public static Result<ExpiryDate> of(String date) {
+        if (isValidDate(date)) {
+            return Result.of(new ExpiryDate(date));
+        } else {
+            return Result.error(MESSAGE_CONSTRAINTS);
+        }
     }
 
     public LocalDate getDate() {
