@@ -27,10 +27,14 @@ public class HistoryManager implements History {
         this.currentIndex = 0;
     }
 
-    public HistoryManager(ArrayList<CommandHistory> commandHistory) {
+    public HistoryManager(List<CommandHistory> commandHistory) {
         this.commandHistory = commandHistory;
         this.startingIndex = commandHistory.size();
         this.currentIndex = startingIndex;
+    }
+
+    public List<CommandHistory> getCommandHistory() {
+        return new ArrayList<>(commandHistory);
     }
 
     @Override
@@ -73,9 +77,11 @@ public class HistoryManager implements History {
         var sj = new StringJoiner("\n");
         var reversedHistory = this.commandHistory.listIterator(this.currentIndex);
 
-        while (reversedHistory.hasPrevious()) {
+        int curr = currentIndex;
+        while (startingIndex < curr) {
             var command = reversedHistory.previous();
             sj.add(command.getCommandText());
+            curr--;
         }
 
         return sj.toString();

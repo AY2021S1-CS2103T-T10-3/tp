@@ -2,6 +2,8 @@ package chopchop;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -13,6 +15,7 @@ import chopchop.commons.util.ConfigUtil;
 import chopchop.commons.util.StringUtil;
 import chopchop.logic.Logic;
 import chopchop.logic.LogicManager;
+import chopchop.logic.history.CommandHistory;
 import chopchop.logic.history.History;
 import chopchop.logic.history.HistoryManager;
 import chopchop.model.EntryBook;
@@ -82,11 +85,21 @@ public class MainApp extends Application {
     }
 
     private History initHistoryManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
+        Optional<List<CommandHistory>> stateListOptional;
+        List<CommandHistory> initialData;
         try {
-            stateList = storage
+            stateListOptional = storage.readState();
+
+            if (stateListOptional.isEmpty()) {
+                logger.warning("Data file not in the correct format. Will be starting with an empty history instead");
+            }
+            initialData = stateListOptional.orElse(new ArrayList<>());
+        } catch (DataConversionException e) {
+            logger.warning("Data file not in the correct format. Will be starting with an empty history instead");
+            initialData = new ArrayList<>();
         }
 
-        return new HistoryManager()
+        return new HistoryManager(initialData);
     }
 
     /**

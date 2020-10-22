@@ -2,11 +2,13 @@ package chopchop.storage;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 import chopchop.commons.core.LogsCenter;
 import chopchop.commons.exceptions.DataConversionException;
+import chopchop.logic.history.CommandHistory;
 import chopchop.model.ReadOnlyEntryBook;
 import chopchop.model.ReadOnlyUserPrefs;
 import chopchop.model.UserPrefs;
@@ -137,5 +139,24 @@ public class StorageManager implements Storage {
         return this.stateStorage.getStateFilePath();
     }
 
-    public void
+    @Override
+    public Optional<List<CommandHistory>> readState() throws DataConversionException {
+        return this.readState(this.stateStorage.getStateFilePath());
+    }
+
+    @Override
+    public Optional<List<CommandHistory>> readState(Path filePath) throws DataConversionException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        return this.stateStorage.readState();
+    }
+
+    @Override
+    public void saveState(List<CommandHistory> states) throws IOException {
+        this.saveState(states, this.stateStorage.getStateFilePath());
+    }
+
+    @Override
+    public void saveState(List<CommandHistory> states, Path filePath) throws IOException {
+        this.stateStorage.saveState(states, filePath);
+    }
 }

@@ -72,7 +72,7 @@ public class LogicManager implements Logic {
 
         try {
             //todo: store states
-            this.storage.saveState(this.history.getHistory());
+            this.storage.saveState(((HistoryManager) this.history).getCommandHistory());
             this.storage.saveIngredientBook(this.model.getIngredientBook());
             this.storage.saveRecipeBook(this.model.getRecipeBook());
         } catch (IOException ioe) {

@@ -1,5 +1,6 @@
 package chopchop.logic.history;
 
+import java.util.List;
 import chopchop.logic.commands.CommandResult;
 import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.model.Model;
@@ -35,4 +36,5 @@ public interface History {
      * Returns the command history in reverse chronological order.
      */
     String getHistory();
+
 }
