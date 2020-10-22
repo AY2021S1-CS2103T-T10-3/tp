@@ -2,9 +2,9 @@
 
 package chopchop.logic.parser;
 
-import chopchop.util.Either;
-import chopchop.util.Result;
-import chopchop.util.StringView;
+import chopchop.commons.util.Either;
+import chopchop.commons.util.Result;
+import chopchop.commons.util.StringView;
 
 public class ItemReference {
 

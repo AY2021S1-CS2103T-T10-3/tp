@@ -8,11 +8,13 @@ import java.util.TreeMap;
 import java.util.Optional;
 import java.util.Comparator;
 
+import chopchop.commons.exceptions.IllegalValueException;
 import chopchop.model.Entry;
 import chopchop.model.attributes.ExpiryDate;
 import chopchop.model.attributes.Quantity;
 import chopchop.model.attributes.Tag;
 import chopchop.model.exceptions.IncompatibleIngredientsException;
+import chopchop.commons.util.Pair;
 
 import static java.util.Objects.requireNonNull;
 
@@ -20,10 +22,8 @@ import static java.util.Objects.requireNonNull;
  * Represents an Ingredient in the recipe manager.
  */
 public class Ingredient extends Entry {
-
     // comparator that compares expiry dates, and puts empty expiries at the end.
     public static final Comparator<Optional<ExpiryDate>> SET_COMPARATOR = (a, b) -> {
-
         if (a.isEmpty() && b.isEmpty()) {
             return 0;
         } else if (a.isEmpty()) {
@@ -46,6 +46,14 @@ public class Ingredient extends Entry {
         this(name, quantity, null, null);
     }
 
+    public Ingredient(String name, Quantity quantity, Set<Tag> tags) {
+        this(name, quantity, null, tags);
+    }
+
+    public Ingredient(String name, Quantity quantity, ExpiryDate expiryDate) {
+        this(name, quantity, expiryDate, null);
+    }
+
     /**
      * Every field(less tag) must be present and not null. If expiry date is not present, use other constructor.
      * Guarantees: details(less tag) are present and not null, field values are validated, immutable.
@@ -61,6 +69,10 @@ public class Ingredient extends Entry {
         } else {
             this.tags = new HashSet<>(tags);
         }
+    }
+
+    public Ingredient(String name, TreeMap<Optional<ExpiryDate>, Quantity> sets) {
+        this(name, sets, null);
     }
 
     /**
@@ -80,12 +92,10 @@ public class Ingredient extends Entry {
 
         // if we have at least 2, then we can get() the optional.
         if (this.sets.size() >= 2) {
-
             return this.sets.values()
                 .stream()
                 .reduce((a, b) -> a.add(b).getValue())
                 .get();
-
         } else {
             // well. then it's just the first one.
             return this.sets.firstEntry().getValue();
@@ -93,12 +103,13 @@ public class Ingredient extends Entry {
     }
 
     public Optional<ExpiryDate> getExpiryDate() {
+        assert !this.sets.isEmpty();
+
         // just return the first expiry date.
-        return this.sets.firstEntry().getKey();
+        return this.sets.firstKey();
     }
 
     public TreeMap<Optional<ExpiryDate>, Quantity> getIngredientSets() {
-
         // i want const correctness dammit
         var ret = new TreeMap<Optional<ExpiryDate>, Quantity>(SET_COMPARATOR);
         ret.putAll(this.sets);
@@ -134,7 +145,6 @@ public class Ingredient extends Entry {
      * @throws IncompatibleIngredientsException if the units of both ingredients were not compatible
      */
     public Ingredient combine(Ingredient other) throws IncompatibleIngredientsException {
-
         if (!this.isSame(other)) {
             throw new IncompatibleIngredientsException(String.format("cannot combine '%s' with '%s'",
                 this.name, other.name));
@@ -147,7 +157,6 @@ public class Ingredient extends Entry {
         // because of exceptions, we cannot do this using nice lambdas and stuff.
         // so write some dirty imperative code to merge the ingredients.
         for (var entry : other.sets.entrySet()) {
-
             var exp = entry.getKey();
             var qty = entry.getValue();
 
@@ -166,6 +175,53 @@ public class Ingredient extends Entry {
         }
 
         return new Ingredient(this.name.toString(), newSets, this.tags);
+    }
+
+    /**
+     * Splits this ingredient into two ingredients, one containing the given quantity,
+     * and one containing the remaining quantity. Ingredients which expire earlier will be
+     * split first.
+     *
+     * @param quantity the quantity to split by
+     * @return a {@code Pair} of {@code Ingredient}s split by the given quantity
+     * @throws IllegalValueException if the quantity provided is larger than the total quantity
+     * of the ingredient
+     */
+    public Pair<Ingredient, Ingredient> split(Quantity quantity)
+            throws IllegalValueException, IncompatibleIngredientsException {
+        if (this.getQuantity().compareTo(quantity) < 0 || quantity.getValue() < 0) {
+            throw new IllegalValueException(String.format("Insufficient '%s' to remove given quantity",
+                    this.name.toString()));
+        }
+
+        var firstSets = new TreeMap<Optional<ExpiryDate>, Quantity>(SET_COMPARATOR);
+        var secondSets = new TreeMap<Optional<ExpiryDate>, Quantity>(SET_COMPARATOR);
+        var currQuantity = quantity;
+        var splitKey = this.sets.firstKey();
+
+        for (var entry : this.sets.entrySet()) {
+            if (entry.getValue().compareTo(currQuantity) < 0) {
+                currQuantity = currQuantity.subtract(entry.getValue())
+                        .orElseThrow(IncompatibleIngredientsException::new);
+            } else {
+                splitKey = entry.getKey();
+                break;
+            }
+        }
+
+        firstSets.putAll(this.sets.subMap(this.sets.firstKey(), splitKey));
+        firstSets.put(splitKey, currQuantity);
+        secondSets.putAll(this.sets.subMap(splitKey, false, this.sets.lastKey(), true));
+
+        var remainingQuantity = this.sets.get(splitKey).subtract(currQuantity)
+                .orElseThrow(IncompatibleIngredientsException::new);
+
+        if (remainingQuantity.getValue() != 0) {
+            secondSets.put(splitKey, remainingQuantity);
+        }
+
+        return new Pair<>(new Ingredient(this.name.toString(), firstSets),
+                new Ingredient(this.name.toString(), secondSets));
     }
 
     @Override

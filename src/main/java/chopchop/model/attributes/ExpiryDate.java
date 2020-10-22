@@ -61,12 +61,4 @@ public class ExpiryDate implements Comparable<ExpiryDate> {
     public int compareTo(ExpiryDate other) {
         return this.date.compareTo(other.date);
     }
-
-    /**
-     * Creates an expiry date far in the future, to represent food that either doesn't expire,
-     * or where the expiry date was not given. TODO: Remove
-     */
-    public static ExpiryDate none() {
-        return new ExpiryDate("9999-12-31");
-    }
 }

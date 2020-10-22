@@ -1,6 +1,6 @@
 // StreamUtils.java
 
-package chopchop.util;
+package chopchop.commons.util;
 
 import java.util.stream.Stream;
 

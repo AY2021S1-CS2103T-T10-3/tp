@@ -2,8 +2,8 @@
 
 package chopchop.logic.parser.commands;
 
-import chopchop.util.Result;
-import chopchop.util.Strings;
+import chopchop.commons.util.Result;
+import chopchop.commons.util.Strings;
 
 import chopchop.logic.parser.CommandArguments;
 

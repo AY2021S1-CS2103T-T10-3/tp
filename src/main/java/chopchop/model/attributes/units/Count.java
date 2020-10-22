@@ -1,10 +1,10 @@
 package chopchop.model.attributes.units;
 
-import chopchop.util.Result;
+import chopchop.commons.util.Result;
 import chopchop.model.attributes.Quantity;
+import chopchop.model.exceptions.IncompatibleIngredientsException;
 
 public class Count implements Quantity {
-
     private final double value;
 
     private Count(double value) {
@@ -13,13 +13,32 @@ public class Count implements Quantity {
 
     @Override
     public Result<Count> add(Quantity qty) {
-
         if (!(qty instanceof Count)) {
             return Result.error("cannot add '%s' to '%s' (incompatible units)", qty, this);
         } else {
             var cnt = (Count) qty;
             return Result.of(new Count(this.value + cnt.value));
         }
+    }
+
+    @Override
+    public Count negate() {
+        return new Count(-this.value);
+    }
+
+    @Override
+    public double getValue() {
+        return this.value;
+    }
+
+    @Override
+    public int compareTo(Quantity other) {
+        if (!(other instanceof Count)) {
+            throw new IncompatibleIngredientsException(
+                    String.format("cannot compare '%s' with '%s' (incompatible units)", other, this));
+        }
+
+        return Double.compare(this.value, ((Count) other).value);
     }
 
     @Override

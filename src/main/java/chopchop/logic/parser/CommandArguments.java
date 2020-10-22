@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import chopchop.util.Pair;
+import chopchop.commons.util.Pair;
 
 /**
  * A container class to hold a parsed command, holding its:

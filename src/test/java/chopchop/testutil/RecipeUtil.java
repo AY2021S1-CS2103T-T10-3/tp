@@ -1,7 +1,7 @@
 package chopchop.testutil;
 
-import static chopchop.util.Strings.ARG_INGREDIENT;
-import static chopchop.util.Strings.ARG_STEP;
+import static chopchop.commons.util.Strings.ARG_INGREDIENT;
+import static chopchop.commons.util.Strings.ARG_STEP;
 
 import chopchop.logic.commands.AddRecipeCommand;
 import chopchop.model.recipe.Recipe;

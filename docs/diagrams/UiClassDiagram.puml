@@ -10,11 +10,15 @@ Class "{abstract}\nUiPart" as UiPart
 Class UiManager
 Class MainWindow
 Class HelpWindow
-Class ResultDisplay
-Class PersonListPanel
-Class PersonCard
-Class StatusBarFooter
+Class CommandOutput
+Class RecipeViewPanel
+Class RecipeCard
 Class CommandBox
+Class IngredientViewPanel
+Class IngredientCard
+Class DisplayController
+Class PinBox
+Class RecipeDisplay
 }
 
 package Model <<Rectangle>> {
@@ -31,30 +35,41 @@ HiddenOutside ..> Ui
 UiManager .left.|> Ui
 UiManager -down-> MainWindow
 MainWindow --> HelpWindow
-MainWindow *-down-> CommandBox
-MainWindow *-down-> ResultDisplay
-MainWindow *-down-> PersonListPanel
-MainWindow *-down-> StatusBarFooter
+MainWindow *-down-> CommandOutput
+MainWindow *-down-> PinBox
+MainWindow *-down-> DisplayController
+DisplayController -down-> RecipeViewPanel
+DisplayController -down-> IngredientViewPanel
+DisplayController -down-> RecipeDisplay
+DisplayController *-down-> CommandBox
 
-PersonListPanel -down-> PersonCard
+RecipeViewPanel *-down-> RecipeCard
+IngredientViewPanel *-down-> IngredientCard
 
 MainWindow -left-|> UiPart
 
-ResultDisplay --|> UiPart
+CommandOutput --|> UiPart
 CommandBox --|> UiPart
-PersonListPanel --|> UiPart
-PersonCard --|> UiPart
-StatusBarFooter --|> UiPart
-HelpWindow -down-|> UiPart
+RecipeViewPanel --|> UiPart
+RecipeCard --|> UiPart
+PinBox --|> UiPart
+DisplayController --|> UiPart
+IngredientCard --|> UiPart
+HelpWindow --|> UiPart
+RecipeDisplay --|> UiPart
+IngredientViewPanel --|> UiPart
 
-PersonCard ..> Model
+RecipeCard ..> Model
+IngredientCard ..> Model
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
-PersonListPanel -[hidden]left- HelpWindow
-HelpWindow -[hidden]left- CommandBox
-CommandBox -[hidden]left- ResultDisplay
-ResultDisplay -[hidden]left- StatusBarFooter
+CommandBox -[hidden]left- CommandOutput
+CommandOutput -[hidden]left- PinBox
+PinBox -[hidden]left- HelpWindow
+RecipeDisplay -[hidden]left- CommandBox
+
+
 
 MainWindow -[hidden]-|> UiPart
 @enduml

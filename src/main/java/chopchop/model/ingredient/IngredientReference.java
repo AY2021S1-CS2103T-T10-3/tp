@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import chopchop.model.Entry;
 import chopchop.model.attributes.Quantity;
-import chopchop.util.Result;
+import chopchop.commons.util.Result;
 
 /**
  * A reference to an ingredient. Not the actual {@code Ingredient}, and knows nothing about it.
@@ -23,17 +23,16 @@ public class IngredientReference extends Entry {
 
     /**
      * Parse an IngredientReference.
-     * TODO: Why is this here?
      *
      * @param source String input.
      * @return the IngredientReference or an error message.
      */
     public static Result<IngredientReference> parse(String source) {
-        String[] words = source.split(" \\(|\\)");
+        var words = source.split(" \\(|\\)");
         if (words.length != 2) {
             return Result.error("Unable to parse string: %s", source);
         }
-        Result<Quantity> qtyResult = Quantity.parse(words[1]);
+        var qtyResult = Quantity.parse(words[1]);
         if (qtyResult.isError()) {
             return Result.error(qtyResult.getError());
         }

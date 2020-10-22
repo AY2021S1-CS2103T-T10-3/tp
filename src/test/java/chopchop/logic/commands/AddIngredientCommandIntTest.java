@@ -29,7 +29,7 @@ public class AddIngredientCommandIntTest {
         expectedModel.addIngredient(validIngredient);
 
         assertCommandSuccess(new AddIngredientCommand(validIngredient), model,
-            String.format(AddIngredientCommand.MESSAGE_SUCCESS, validIngredient), expectedModel);
+            String.format(AddIngredientCommand.MESSAGE_ADD_INGREDIENT_SUCCESS, validIngredient), expectedModel);
     }
 <<<<<<< HEAD
 

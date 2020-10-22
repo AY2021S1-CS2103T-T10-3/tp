@@ -1,6 +1,6 @@
 // Slice.java
 
-package chopchop.util;
+package chopchop.commons.util;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

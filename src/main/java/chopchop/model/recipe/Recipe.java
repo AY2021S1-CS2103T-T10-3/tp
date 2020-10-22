@@ -105,10 +105,10 @@ public class Recipe extends Entry {
 
     @Override
     public String toString() {
-        StringJoiner recipeJoiner = new StringJoiner(" ");
-        StringJoiner ingredientJoiner = new StringJoiner(", ");
-        StringJoiner stepJoiner = new StringJoiner(", ");
-        AtomicInteger counter = new AtomicInteger(1);
+        var recipeJoiner = new StringJoiner(" ");
+        var ingredientJoiner = new StringJoiner(", ");
+        var stepJoiner = new StringJoiner(", ");
+        var counter = new AtomicInteger(1);
 
         this.getIngredients().forEach(ingredient -> ingredientJoiner.add(ingredient.toString()));
         this.getSteps().forEach(step -> stepJoiner.add(counter.getAndIncrement() + ". " + step.toString()));

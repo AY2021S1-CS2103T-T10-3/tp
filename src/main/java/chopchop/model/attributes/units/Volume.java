@@ -1,10 +1,10 @@
 package chopchop.model.attributes.units;
 
-import chopchop.util.Result;
+import chopchop.commons.util.Result;
 import chopchop.model.attributes.Quantity;
+import chopchop.model.exceptions.IncompatibleIngredientsException;
 
 public class Volume implements Quantity {
-
     private static double RATIO_LITRE       = 1.0;
     private static double RATIO_MILLILITRE  = 0.001;
     private static double RATIO_CUP         = 0.250;    // we're using the metric cup, for obvious reasons.
@@ -38,8 +38,7 @@ public class Volume implements Quantity {
     }
 
     @Override
-    public Result<Quantity> add(Quantity qty) {
-
+    public Result<Volume> add(Quantity qty) {
         if (!(qty instanceof Volume)) {
             return Result.error("cannot add '%s' to '%s' (incompatible units)", qty, this);
         } else {
@@ -48,6 +47,26 @@ public class Volume implements Quantity {
 
             return Result.of(new Volume(newval, this.ratio));
         }
+    }
+
+    @Override
+    public Volume negate() {
+        return new Volume(-this.value, this.ratio);
+    }
+
+    @Override
+    public double getValue() {
+        return this.value;
+    }
+
+    @Override
+    public int compareTo(Quantity other) {
+        if (!(other instanceof Volume)) {
+            throw new IncompatibleIngredientsException(
+                    String.format("cannot compare '%s' with '%s' (incompatible units)", other, this));
+        }
+
+        return Double.compare(this.value * this.ratio, ((Volume) other).value * ((Volume) other).ratio);
     }
 
     @Override
@@ -92,15 +111,15 @@ public class Volume implements Quantity {
 
         double ratio = 1;
 
-        if (unit.equals(UNIT_MILLILITRE)) {
+        if (unit.equalsIgnoreCase(UNIT_MILLILITRE)) {
             ratio = RATIO_MILLILITRE;
-        } else if (unit.equals(UNIT_LITRE)) {
+        } else if (unit.equalsIgnoreCase(UNIT_LITRE)) {
             ratio = RATIO_LITRE;
-        } else if (unit.equals(UNIT_CUP) || unit.equals(UNIT_CUPS)) {
+        } else if (unit.equalsIgnoreCase(UNIT_CUP) || unit.equalsIgnoreCase(UNIT_CUPS)) {
             ratio = RATIO_CUP;
-        } else if (unit.equals(UNIT_TABLESPOON)) {
+        } else if (unit.equalsIgnoreCase(UNIT_TABLESPOON)) {
             ratio = RATIO_TABLESPOON;
-        } else if (unit.equals(UNIT_TEASPOON)) {
+        } else if (unit.equalsIgnoreCase(UNIT_TEASPOON)) {
             ratio = RATIO_TEASPOON;
         } else {
             return Result.error("unknown unit '%s'", unit);

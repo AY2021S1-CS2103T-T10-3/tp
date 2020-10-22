@@ -5,9 +5,9 @@ package chopchop.logic.parser.commands;
 import java.util.List;
 import java.util.Optional;
 
-import chopchop.util.Pair;
-import chopchop.util.Result;
-import chopchop.util.StringView;
+import chopchop.commons.util.Pair;
+import chopchop.commons.util.Result;
+import chopchop.commons.util.StringView;
 
 import chopchop.logic.parser.ArgName;
 import chopchop.logic.parser.CommandArguments;

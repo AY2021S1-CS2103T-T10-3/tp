@@ -4,8 +4,8 @@ package chopchop.model.attributes;
 
 import java.util.Map;
 
-import chopchop.util.Pair;
-import chopchop.util.Result;
+import chopchop.commons.util.Pair;
+import chopchop.commons.util.Result;
 import chopchop.model.attributes.units.Mass;
 import chopchop.model.attributes.units.Count;
 import chopchop.model.attributes.units.Volume;

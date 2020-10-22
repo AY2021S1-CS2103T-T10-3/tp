@@ -45,6 +45,8 @@ skinparam Class {
     FontName Arial
 }
 
+skinparam genericDisplay old
+
 skinparam Actor {
     BorderColor USER_COLOR
     Color USER_COLOR

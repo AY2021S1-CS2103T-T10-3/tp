@@ -11,8 +11,8 @@ import chopchop.commons.core.Version;
 import chopchop.commons.exceptions.DataConversionException;
 import chopchop.commons.util.ConfigUtil;
 import chopchop.commons.util.StringUtil;
-import chopchop.logic.CommandDispatcher;
 import chopchop.logic.Logic;
+import chopchop.logic.LogicManager;
 import chopchop.model.EntryBook;
 import chopchop.model.Model;
 import chopchop.model.ModelManager;
@@ -68,7 +68,7 @@ public class MainApp extends Application {
 
         model = initModelManager(storage, userPrefs);
 
-        logic = new CommandDispatcher(model, storage);
+        logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic);
     }

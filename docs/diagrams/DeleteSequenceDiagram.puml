@@ -3,66 +3,78 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
-participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
+participant ":CommandParser" as CommandParser LOGIC_COLOR
+participant "<<class>>\n:DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
+participant "<<class>>\n:CommonParser" as CommonParser LOGIC_COLOR
+participant "d:DeleteRecipeCommand" as DeleteRecipeCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
+participant ":HistoryManager" as HistoryManager LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("delete 1")
+[-> LogicManager : execute("delete recipe #1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("delete 1")
-activate AddressBookParser
+LogicManager -> CommandParser : parse("delete recipe #1")
+activate CommandParser
 
-create DeleteCommandParser
-AddressBookParser -> DeleteCommandParser
+CommandParser -> CommandParser : parseArgs("delete recipe #1")
+activate CommandParser
+CommandParser --> CommandParser : "recipe #1"
+deactivate CommandParser
+
+CommandParser -> DeleteCommandParser : parseDeleteCommand("recipe #1")
 activate DeleteCommandParser
 
-DeleteCommandParser --> AddressBookParser
-deactivate DeleteCommandParser
+DeleteCommandParser -> CommonParser : getCommandTarget("recipe #1")
+activate CommonParser
+CommonParser --> DeleteCommandParser : "recipe"
+deactivate CommonParser
 
-AddressBookParser -> DeleteCommandParser : parse("1")
+DeleteCommandParser -> DeleteCommandParser : parseDeleteRecipeCommand("recipe", "#1")
 activate DeleteCommandParser
 
-create DeleteCommand
-DeleteCommandParser -> DeleteCommand
-activate DeleteCommand
+create DeleteRecipeCommand
+DeleteCommandParser -> DeleteRecipeCommand
+activate DeleteRecipeCommand
 
-DeleteCommand --> DeleteCommandParser : d
-deactivate DeleteCommand
+DeleteRecipeCommand --> DeleteCommandParser : d
+deactivate DeleteRecipeCommand
 
-DeleteCommandParser --> AddressBookParser : d
+DeleteCommandParser --> DeleteCommandParser : d
 deactivate DeleteCommandParser
-'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> AddressBookParser
-destroy DeleteCommandParser
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
+DeleteCommandParser --> CommandParser : d
+deactivate DeleteCommandParser
 
-LogicManager -> DeleteCommand : execute()
-activate DeleteCommand
+CommandParser --> LogicManager : d
+deactivate CommandParser
 
-DeleteCommand -> Model : deletePerson(1)
+LogicManager -> DeleteRecipeCommand : execute()
+activate DeleteRecipeCommand
+
+DeleteRecipeCommand -> Model : deleteRecipe(1)
 activate Model
 
-Model --> DeleteCommand
+Model --> DeleteRecipeCommand
 deactivate Model
 
 create CommandResult
-DeleteCommand -> CommandResult
+DeleteRecipeCommand -> CommandResult
 activate CommandResult
 
-CommandResult --> DeleteCommand
+CommandResult --> DeleteRecipeCommand
 deactivate CommandResult
 
-DeleteCommand --> LogicManager : result
-deactivate DeleteCommand
+DeleteRecipeCommand --> LogicManager : result
+deactivate DeleteRecipeCommand
+
+LogicManager -> HistoryManager : add(d)
+activate HistoryManager
+deactivate HistoryManager
 
 [<--LogicManager
 deactivate LogicManager

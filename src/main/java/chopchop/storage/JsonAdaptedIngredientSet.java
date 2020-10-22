@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import chopchop.commons.exceptions.IllegalValueException;
+import chopchop.commons.util.Pair;
 import chopchop.model.attributes.ExpiryDate;
 import chopchop.model.attributes.Quantity;
 import chopchop.model.ingredient.Ingredient;
-import chopchop.util.Pair;
 
 public class JsonAdaptedIngredientSet {
 

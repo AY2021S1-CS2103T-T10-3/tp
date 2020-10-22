@@ -6,18 +6,18 @@ import static chopchop.testutil.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import chopchop.logic.history.CommandHistory;
+import chopchop.logic.history.History;
 import chopchop.logic.parser.ItemReference;
 import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.model.EntryBook;
 import chopchop.model.Model;
 import chopchop.model.attributes.NameContainsKeywordsPredicate;
 import chopchop.model.ingredient.Ingredient;
-<<<<<<< HEAD
 import chopchop.model.ingredient.IngredientBook;
 import chopchop.model.recipe.Recipe;
 import chopchop.model.recipe.RecipeBook;
-=======
->>>>>>> b04c1647ff463527478c9337eb1f7248df163b1e
 
 public class CommandTestUtil {
     public static final String VALID_INGREDIENT_NAME_APRICOT = "Apricot";
@@ -41,7 +41,7 @@ public class CommandTestUtil {
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
                                             Model expectedModel) {
         try {
-            CommandResult result = command.execute(actualModel);
+            CommandResult result = command.execute(actualModel, new HistoryStub());
             assertEquals(expectedCommandResult, result);
             assertEquals(expectedModel, actualModel);
         } catch (CommandException ce) {
@@ -71,7 +71,7 @@ public class CommandTestUtil {
         EntryBook<Ingredient> expectedIndBook = new EntryBook<>(actualModel.getIngredientBook());
         List<Ingredient> expectedFilteredList = new ArrayList<>(actualModel.getFilteredIngredientList());
 
-        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel, new HistoryStub()));
         assertEquals(expectedIndBook, actualModel.getIngredientBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredIngredientList());
     }
@@ -82,7 +82,7 @@ public class CommandTestUtil {
      * - the CommandException message matches {@code expectedMessage} <br>
      * - the address book, filtered person list and selected person in {@code actualModel} remain unchanged
      */
-<<<<<<< HEAD
+
     public static void assertRecipeCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
@@ -103,29 +103,34 @@ public class CommandTestUtil {
 
         Ingredient ind = model.getFilteredIngredientList().get(targetIndex.getZeroBased());
         final String[] splitName = ind.getName().fullName.split("\\s+");
-=======
-    public static void showPersonAtIndex(Model model, ItemReference targetIndex) {
-        assertTrue(targetIndex.getZeroIndex() < model.getFilteredIngredientList().size());
-
-        Ingredient person = model.getFilteredIngredientList().get(targetIndex.getZeroIndex());
-        final String[] splitName = person.getName().split("\\s+");
->>>>>>> b04c1647ff463527478c9337eb1f7248df163b1e
+        
         model.updateFilteredIngredientList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredIngredientList().size());
     }
 
     /**
-     * Updates {@code model}'s filtered list to show only the recipe at the given {@code targetIndex} in the
-     * {@code model}'s recipe book.
+     * A default history stub that have all of the methods failing.
      */
-    public static void showRecipeAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredRecipeList().size());
+    public static class HistoryStub implements History {
+        @Override
+        public void add(CommandHistory command) {
+            throw new AssertionError("This method should not be called.");
+        }
 
-        Recipe rec = model.getFilteredRecipeList().get(targetIndex.getZeroBased());
-        final String[] splitName = rec.getName().fullName.split("\\s+");
-        model.updateFilteredRecipeList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
+        @Override
+        public CommandResult undo(Model model) {
+            throw new AssertionError("This method should not be called.");
+        }
 
-        assertEquals(1, model.getFilteredRecipeList().size());
+        @Override
+        public CommandResult redo(Model model) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public String getHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }

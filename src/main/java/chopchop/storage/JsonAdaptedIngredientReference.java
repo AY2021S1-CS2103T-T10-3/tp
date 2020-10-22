@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import chopchop.commons.exceptions.IllegalValueException;
+import chopchop.commons.util.Result;
 import chopchop.model.attributes.Name;
 import chopchop.model.attributes.Quantity;
 import chopchop.model.ingredient.IngredientReference;
-import chopchop.util.Result;
 
 public class JsonAdaptedIngredientReference {
     public static final String INGREDIENT_REFERENCE_MISSING_FIELD_MESSAGE_FORMAT =

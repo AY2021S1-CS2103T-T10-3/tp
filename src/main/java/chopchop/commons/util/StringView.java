@@ -1,6 +1,6 @@
 // StringView.java
 
-package chopchop.util;
+package chopchop.commons.util;
 
 import java.util.List;
 import java.util.Arrays;

@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import chopchop.model.attributes.Tag;
-import chopchop.util.Result;
-import chopchop.util.Strings;
-import chopchop.util.StringView;
+import chopchop.commons.util.Result;
+import chopchop.commons.util.Strings;
+import chopchop.commons.util.StringView;
 
 import chopchop.model.recipe.Recipe;
 import chopchop.model.ingredient.Ingredient;

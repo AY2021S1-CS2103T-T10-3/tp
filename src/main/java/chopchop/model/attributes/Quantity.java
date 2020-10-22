@@ -3,8 +3,8 @@ package chopchop.model.attributes;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import chopchop.util.Result;
-import chopchop.util.StringView;
+import chopchop.commons.util.Result;
+import chopchop.commons.util.StringView;
 import chopchop.model.attributes.units.Mass;
 import chopchop.model.attributes.units.Count;
 import chopchop.model.attributes.units.Volume;
@@ -27,8 +27,7 @@ import chopchop.model.attributes.units.Volume;
  * different ratios (prefixes) of the same unit; eg. it should be possible to add 700g to 2kg to
  * obtain 2.7kg.
  */
-public interface Quantity {
-
+public interface Quantity extends Comparable<Quantity> {
     /**
      * Adds a quantity to this, and returns a new quantity (without modifying the original).
      * The input quantity can be negative to perform a subtraction. If the units are incompatible,
@@ -37,7 +36,32 @@ public interface Quantity {
      * @param qty the addend
      * @return    a new Quantity after performing the addition.
      */
-    public Result<? extends Quantity> add(Quantity qty);
+    Result<? extends Quantity> add(Quantity qty);
+
+    /**
+     * Convenience function to subtract a quantity from this.
+     *
+     * @param qty the minuend
+     * @return    a new Quantity after performing the subtraction.
+     * @see #add(Quantity)
+     */
+    default Result<? extends Quantity> subtract(Quantity qty) {
+        return this.add(qty.negate());
+    }
+
+    /**
+     * Negates this quantity, primarily used for subtracting quantities.
+     *
+     * @return a new Quantity representing the negation of this quantity.
+     */
+    Quantity negate();
+
+    /**
+     * Returns the value of this quantity.
+     *
+     * @return the double value of this quantity.
+     */
+    double getValue();
 
     /**
      * Parse a quantity and its associated unit.
@@ -45,8 +69,7 @@ public interface Quantity {
      * @param input the string input
      * @return      the parsed input, or an error message.
      */
-    public static Result<Quantity> parse(String input) {
-
+    static Result<Quantity> parse(String input) {
         final List<BiFunction<Double, String, Result<Quantity>>> knownUnits = List.of(
             Mass::of, Volume::of, Count::of
         );

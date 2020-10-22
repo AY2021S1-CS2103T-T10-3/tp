@@ -1,6 +1,6 @@
 // Result.java
 
-package chopchop.util;
+package chopchop.commons.util;
 
 import java.util.Optional;
 import java.util.function.Function;
