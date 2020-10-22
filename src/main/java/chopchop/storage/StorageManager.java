@@ -20,6 +20,7 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private final IngredientBookStorage ingredientBookStorage;
     private final RecipeBookStorage recipeBookStorage;
+    private final StateStorage stateStorage;
     private final UserPrefsStorage userPrefsStorage;
 
     /**
@@ -27,9 +28,10 @@ public class StorageManager implements Storage {
      * {@code UserPrefStorage}.
      */
     public StorageManager(RecipeBookStorage recipeBookStorage, IngredientBookStorage ingredientBookStorage,
-                          UserPrefsStorage userPrefsStorage) {
+            StateStorage stateStorage, UserPrefsStorage userPrefsStorage) {
         this.recipeBookStorage = recipeBookStorage;
         this.ingredientBookStorage = ingredientBookStorage;
+        this.stateStorage = stateStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -129,4 +131,11 @@ public class StorageManager implements Storage {
         logger.fine("Attempting to write to data file: " + filePath);
         this.recipeBookStorage.saveRecipeBook(recipeBook, filePath);
     }
+
+    // ============================= State methods ===================================
+    public Path getStateFilePath() {
+        return this.stateStorage.getStateFilePath();
+    }
+
+    public void
 }

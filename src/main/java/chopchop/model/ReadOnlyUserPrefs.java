@@ -13,4 +13,6 @@ public interface ReadOnlyUserPrefs {
     Path getIngredientBookFilePath();
 
     Path getRecipeBookFilePath();
+
+    Path getStateFilePath();
 }

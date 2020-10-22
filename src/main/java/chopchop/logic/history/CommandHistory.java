@@ -44,4 +44,10 @@ public class CommandHistory {
     public Optional<Undoable> getCommand() {
         return Optional.ofNullable(this.command);
     }
+
+    @Override
+    public String toString() {
+        //todo: Might need more info
+        return String.format("%s", this.commandText);
+    }
 }

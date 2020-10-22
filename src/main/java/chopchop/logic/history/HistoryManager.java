@@ -16,6 +16,7 @@ public class HistoryManager implements History {
     public static final String MESSAGE_CANNOT_REDO = "No commands to redo";
 
     private final List<CommandHistory> commandHistory;
+    private int startingIndex;
     private int currentIndex;
 
     /**
@@ -24,6 +25,12 @@ public class HistoryManager implements History {
     public HistoryManager() {
         this.commandHistory = new ArrayList<>();
         this.currentIndex = 0;
+    }
+
+    public HistoryManager(ArrayList<CommandHistory> commandHistory) {
+        this.commandHistory = commandHistory;
+        this.startingIndex = commandHistory.size();
+        this.currentIndex = startingIndex;
     }
 
     @Override

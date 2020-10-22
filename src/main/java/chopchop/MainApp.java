@@ -13,6 +13,8 @@ import chopchop.commons.util.ConfigUtil;
 import chopchop.commons.util.StringUtil;
 import chopchop.logic.Logic;
 import chopchop.logic.LogicManager;
+import chopchop.logic.history.History;
+import chopchop.logic.history.HistoryManager;
 import chopchop.model.EntryBook;
 import chopchop.model.Model;
 import chopchop.model.ModelManager;
@@ -25,8 +27,10 @@ import chopchop.model.util.SampleDataUtil;
 import chopchop.storage.IngredientBookStorage;
 import chopchop.storage.JsonIngredientBookStorage;
 import chopchop.storage.JsonRecipeBookStorage;
+import chopchop.storage.JsonStateStorage;
 import chopchop.storage.JsonUserPrefsStorage;
 import chopchop.storage.RecipeBookStorage;
+import chopchop.storage.StateStorage;
 import chopchop.storage.Storage;
 import chopchop.storage.StorageManager;
 import chopchop.storage.UserPrefsStorage;
@@ -47,6 +51,7 @@ public class MainApp extends Application {
     protected Logic logic;
     protected Storage storage;
     protected Model model;
+    protected History history;
     protected Config config;
 
     @Override
@@ -62,15 +67,26 @@ public class MainApp extends Application {
         RecipeBookStorage recipeBookStorage = new JsonRecipeBookStorage(userPrefs.getRecipeBookFilePath());
         IngredientBookStorage ingredientBookStorage =
                 new JsonIngredientBookStorage(userPrefs.getIngredientBookFilePath());
-        storage = new StorageManager(recipeBookStorage, ingredientBookStorage, userPrefsStorage);
+        StateStorage stateStorage = new JsonStateStorage(userPrefs.getStateFilePath());
+        storage = new StorageManager(recipeBookStorage, ingredientBookStorage, stateStorage, userPrefsStorage);
 
         initLogging(config);
 
         model = initModelManager(storage, userPrefs);
 
-        logic = new LogicManager(model, storage);
+        history = initHistoryManager(storage, userPrefs);
+
+        logic = new LogicManager(model, storage, history);
 
         ui = new UiManager(logic);
+    }
+
+    private History initHistoryManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
+        try {
+            stateList = storage
+        }
+
+        return new HistoryManager()
     }
 
     /**

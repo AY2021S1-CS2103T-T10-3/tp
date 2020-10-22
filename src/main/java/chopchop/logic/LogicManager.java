@@ -37,10 +37,10 @@ public class LogicManager implements Logic {
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
      */
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model, Storage storage, History history) {
         this.model = model;
         this.storage = storage;
-        this.history = new HistoryManager();
+        this.history = history;
         this.parser = new CommandParser();
     }
 
@@ -66,7 +66,13 @@ public class LogicManager implements Logic {
             this.history.add(new CommandHistory(commandText, cmd));
         }
 
+        if (cmd instanceof UndoCommand) {
+            // delete state
+        }
+
         try {
+            //todo: store states
+            this.storage.saveState(this.history.getHistory());
             this.storage.saveIngredientBook(this.model.getIngredientBook());
             this.storage.saveRecipeBook(this.model.getRecipeBook());
         } catch (IOException ioe) {
