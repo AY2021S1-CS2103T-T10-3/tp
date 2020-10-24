@@ -179,7 +179,8 @@ public class MainWindow extends UiPart<Stage> {
         try {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getMessage());
-            this.commandOutput.setFeedbackToUser(commandResult.getMessage());
+
+            this.commandOutput.setFeedbackToUser(commandResult.getMessage(), commandResult.isError());
 
             if (commandResult.shouldShowHelp()) {
                 handleHelp();
@@ -190,9 +191,11 @@ public class MainWindow extends UiPart<Stage> {
             }
 
             return commandResult;
+
         } catch (CommandException | ParseException e) {
-            logger.info("Invalid command: " + commandText);
-            commandOutput.setFeedbackToUser(e.getMessage());
+            // logger.info("Invalid command: " + commandText);
+
+            commandOutput.setFeedbackToUser(e.getMessage(), /* isError: */ true);
             throw e;
         }
     }

@@ -99,7 +99,7 @@
     -fx-background-radius: 6;
     -fx-border-color: #ff7043;
     -fx-border-radius: 6;
-    -fx-padding: 8 4;
+    -fx-padding: 8 12;
 }
 #displayBox .scroll-pane {
     -fx-background-color: transparent;
