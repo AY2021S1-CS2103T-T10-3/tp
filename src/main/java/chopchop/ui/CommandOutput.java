@@ -33,7 +33,8 @@ public class CommandOutput extends UiPart<Region> {
     /**
      * Displays the commandResult to the user.
      *
-     * @param feedbackToUser
+     * @param message the message to display
+     * @param isError whether or not the message should be styled as an error
      */
     public void setFeedbackToUser(String message, boolean isError) {
         requireNonNull(message);
