@@ -40,7 +40,7 @@ public class FindRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return new CommandResult(
+        return CommandResult.message(
                 String.format(Messages.MESSAGE_RECIPES_LISTED_OVERVIEW, model.getFilteredRecipeList().size()));
     }
 

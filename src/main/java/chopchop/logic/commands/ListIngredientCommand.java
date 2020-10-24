@@ -23,7 +23,7 @@ public class ListIngredientCommand extends Command {
             DisplayNavigator.loadIngredientPanel();
         }
 
-        return new CommandResult(MESSAGE_SUCCESS);
+        return CommandResult.message(MESSAGE_SUCCESS);
     }
 
     @Override

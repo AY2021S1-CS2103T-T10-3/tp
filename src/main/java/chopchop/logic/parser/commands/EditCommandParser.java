@@ -286,7 +286,7 @@ public class EditCommandParser {
 
         @Override
         public CommandResult execute(Model model, HistoryManager historyManager) throws CommandException {
-            return new CommandResult("");
+            return CommandResult.message("");
         }
     }
 }

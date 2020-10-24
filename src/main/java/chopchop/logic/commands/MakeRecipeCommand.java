@@ -88,7 +88,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
             }
         }
 
-        return new CommandResult(String.format(MESSAGE_MAKE_RECIPE_SUCCESS, this.recipe));
+        return CommandResult.message(MESSAGE_MAKE_RECIPE_SUCCESS, this.recipe);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
         }
 
         this.ingredients.clear();
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, this.recipe));
+        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.recipe);
     }
 
     @Override

@@ -41,8 +41,8 @@ public class FindIngredientCommand extends Command {
             DisplayNavigator.loadIngredientPanel();
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_INGREDIENTS_LISTED_OVERVIEW,
-            model.getFilteredIngredientList().size()));
+        return CommandResult.message(Messages.MESSAGE_INGREDIENTS_LISTED_OVERVIEW,
+            model.getFilteredIngredientList().size());
     }
 
     @Override

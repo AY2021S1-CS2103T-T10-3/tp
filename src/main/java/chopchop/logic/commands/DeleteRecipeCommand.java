@@ -55,7 +55,7 @@ public class DeleteRecipeCommand extends Command implements Undoable {
         }
 
         model.deleteRecipe(this.recipe);
-        return new CommandResult(String.format(MESSAGE_DELETE_RECIPE_SUCCESS, this.recipe));
+        return CommandResult.message(MESSAGE_DELETE_RECIPE_SUCCESS, this.recipe);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DeleteRecipeCommand extends Command implements Undoable {
         requireNonNull(model);
 
         model.addRecipe(this.recipe);
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, this.recipe));
+        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.recipe);
     }
 
     @Override

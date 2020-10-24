@@ -86,14 +86,14 @@ public class DeleteIngredientCommand extends Command implements Undoable {
                     model.setIngredient(this.ingredient, this.updatedIngredient);
                 }
 
-                return new CommandResult(String.format(MESSAGE_REMOVE_INGREDIENT_SUCCESS,
-                        this.quantity.get().toString(), this.updatedIngredient.getName()));
+                return CommandResult.message(MESSAGE_REMOVE_INGREDIENT_SUCCESS,
+                        this.quantity.get().toString(), this.updatedIngredient.getName());
             } catch (IncompatibleIngredientsException | IllegalValueException e) {
                 throw new CommandException(e.getMessage());
             }
         } else {
             model.deleteIngredient(this.ingredient);
-            return new CommandResult(String.format(MESSAGE_DELETE_INGREDIENT_SUCCESS, this.ingredient));
+            return CommandResult.message(MESSAGE_DELETE_INGREDIENT_SUCCESS, this.ingredient);
         }
     }
 
@@ -107,7 +107,7 @@ public class DeleteIngredientCommand extends Command implements Undoable {
             model.setIngredient(this.updatedIngredient, this.ingredient);
         }
 
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, this.ingredient));
+        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.ingredient);
     }
 
     @Override

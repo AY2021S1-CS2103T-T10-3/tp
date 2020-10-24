@@ -54,13 +54,14 @@ public class AddIngredientCommand extends Command implements Undoable {
                 this.combinedIngredient = this.existingIngredient.combine(this.ingredient);
                 model.setIngredient(this.existingIngredient, this.combinedIngredient);
 
-                return new CommandResult(String.format(MESSAGE_COMBINE_INGREDIENT_SUCCESS, this.combinedIngredient));
+                return CommandResult.message(MESSAGE_COMBINE_INGREDIENT_SUCCESS,
+                    this.combinedIngredient);
             } catch (IncompatibleIngredientsException e) {
                 throw new CommandException(e.toString());
             }
         } else {
             model.addIngredient(this.ingredient);
-            return new CommandResult(String.format(MESSAGE_ADD_INGREDIENT_SUCCESS, this.ingredient));
+            return CommandResult.message(MESSAGE_ADD_INGREDIENT_SUCCESS, this.ingredient);
         }
     }
 
@@ -70,10 +71,10 @@ public class AddIngredientCommand extends Command implements Undoable {
 
         if (this.existingIngredient == null && this.combinedIngredient == null) {
             model.deleteIngredient(this.ingredient);
-            return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, this.ingredient));
+            return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.ingredient);
         } else {
             model.setIngredient(this.combinedIngredient, this.existingIngredient);
-            return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, this.existingIngredient));
+            return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.existingIngredient);
         }
     }
 

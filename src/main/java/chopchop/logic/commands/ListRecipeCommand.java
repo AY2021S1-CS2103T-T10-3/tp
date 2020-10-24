@@ -23,7 +23,7 @@ public class ListRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return new CommandResult(MESSAGE_SUCCESS);
+        return CommandResult.message(MESSAGE_SUCCESS);
     }
 
     @Override

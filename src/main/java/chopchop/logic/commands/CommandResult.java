@@ -1,3 +1,5 @@
+// CommandResult.java
+
 package chopchop.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -8,54 +10,106 @@ import java.util.Objects;
  * Represents the result of a command execution.
  */
 public class CommandResult {
-    private final String feedbackToUser;
 
-    /** Help information should be shown to the user. */
+    private final String message;
+    private final boolean isError;
     private final boolean showHelp;
-
-    /** The application should exit. */
-    private final boolean exit;
+    private final boolean shouldExit;
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this.feedbackToUser = requireNonNull(feedbackToUser);
+    private CommandResult(String message, boolean isError, boolean shouldExit, boolean showHelp) {
+        requireNonNull(message);
+
+        this.message = message;
+        this.isError = isError;
         this.showHelp = showHelp;
-        this.exit = exit;
+        this.shouldExit = shouldExit;
     }
 
     /**
-     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
-     * and other fields set to their default value.
+     * Returns true if the application should exit after this command
      */
-    public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false);
+    public boolean shouldExit() {
+        return this.shouldExit;
     }
 
-    public String getFeedbackToUser() {
-        return this.feedbackToUser;
-    }
-
-    public boolean isShowHelp() {
+    /**
+     * Returns true if the app should open the help window
+     */
+    public boolean shouldShowHelp() {
         return this.showHelp;
     }
 
-    public boolean isExit() {
-        return this.exit;
+    /**
+     * Returns true if the message should be styled as an error
+     */
+    public boolean isError() {
+        return this.isError;
+    }
+
+    /**
+     * Returns the message
+     */
+    public String getMessage() {
+        return this.message;
     }
 
     @Override
-    public boolean equals(Object other) {
-        return other == this
-                || (other instanceof CommandResult
-                && this.feedbackToUser.equals(((CommandResult) other).feedbackToUser)
-                && this.showHelp == ((CommandResult) other).showHelp
-                && this.exit == ((CommandResult) other).exit);
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (!(obj instanceof CommandResult)) {
+            return false;
+        }
+
+        var cr = (CommandResult) obj;
+
+        return this.message.equals(cr.message)
+            && this.isError == cr.isError
+            && this.showHelp == cr.showHelp
+            && this.shouldExit == cr.shouldExit;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.feedbackToUser, this.showHelp, this.exit);
+        return Objects.hash(this.message, this.isError, this.showHelp, this.shouldExit);
+    }
+
+    /**
+     * Constructs a new command result that only shows a message.
+     *
+     * @param message the message to show
+     */
+    public static CommandResult message(String message, Object... args) {
+        return new CommandResult(String.format(message, args),
+            /* isError: */ false, /* shouldExit: */ false, /* showHelp: */ false);
+    }
+
+    /**
+     * Constructs a new command result that shows an error.
+     *
+     * @param error the error to show
+     */
+    public static CommandResult error(String error, Object... args) {
+        return new CommandResult(String.format(error, args),
+            /* isError: */ true, /* shouldExit: */ false, /* showHelp: */ false);
+    }
+
+    /**
+     * Constructs a new command result that shows help
+     */
+    public static CommandResult help() {
+        return new CommandResult("", /* isError: */ false, /* shouldExit: */ false,
+            /* showHelp: */ true);
+    }
+
+    /**
+     * Constructs a new command result that quits.
+     */
+    public static CommandResult exit() {
+        return new CommandResult("", /* isError: */ false, /* shouldExit: */ true,
+            /* showHelp: */ false);
     }
 }
