@@ -12,8 +12,6 @@ import chopchop.ui.DisplayNavigator;
  */
 public class ListRecipeCommand extends Command {
 
-    public static final String MESSAGE_SUCCESS = "Listed all recipes";
-
     @Override
     public CommandResult execute(Model model, HistoryManager historyManager) {
         requireNonNull(model);
@@ -23,7 +21,7 @@ public class ListRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return CommandResult.message(MESSAGE_SUCCESS);
+        return CommandResult.message("listed recipes");
     }
 
     @Override

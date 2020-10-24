@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import chopchop.commons.core.Messages;
 import chopchop.commons.exceptions.IllegalValueException;
 import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.logic.history.HistoryManager;
@@ -33,11 +32,6 @@ public class DeleteIngredientCommand extends Command implements Undoable {
             + " Chili "
             + ARG_QUANTITY + " 3";
 
-    public static final String MESSAGE_DELETE_INGREDIENT_SUCCESS = "Ingredient deleted: %s";
-    public static final String MESSAGE_REMOVE_INGREDIENT_SUCCESS = "Removed %s of '%s'";
-    public static final String MESSAGE_INGREDIENT_NOT_FOUND = "No ingredient named '%s'";
-    public static final String MESSAGE_UNDO_SUCCESS = "Ingredient updated: %s";
-
     private final ItemReference item;
     private final Optional<Quantity> quantity;
     private Ingredient ingredient;
@@ -60,20 +54,12 @@ public class DeleteIngredientCommand extends Command implements Undoable {
     public CommandResult execute(Model model, HistoryManager historyManager) throws CommandException {
         requireNonNull(model);
 
-        if (this.item.isIndexed()) {
-            var lastShownList = model.getFilteredIngredientList();
-
-            if (this.item.getZeroIndex() >= lastShownList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_INGREDIENT_DISPLAYED_INDEX);
-            }
-
-            this.ingredient = lastShownList.get(this.item.getZeroIndex());
-        } else {
-            this.ingredient = model
-                    .findIngredientWithName(this.item.getName())
-                    .orElseThrow(() -> new CommandException(String.format(MESSAGE_INGREDIENT_NOT_FOUND,
-                            this.item.getName())));
+        var res = resolveIngredientReference(this.item, model);
+        if (res.isError()) {
+            return CommandResult.error(res.getError());
         }
+
+        this.ingredient = res.getValue();
 
         if (this.quantity.isPresent()) {
             try {
@@ -86,14 +72,15 @@ public class DeleteIngredientCommand extends Command implements Undoable {
                     model.setIngredient(this.ingredient, this.updatedIngredient);
                 }
 
-                return CommandResult.message(MESSAGE_REMOVE_INGREDIENT_SUCCESS,
-                        this.quantity.get().toString(), this.updatedIngredient.getName());
+                return CommandResult.message("removed %s of ingredient '%s'", this.quantity.get().toString(),
+                    this.updatedIngredient.getName());
+
             } catch (IncompatibleIngredientsException | IllegalValueException e) {
-                throw new CommandException(e.getMessage());
+                return CommandResult.error(e.getMessage());
             }
         } else {
             model.deleteIngredient(this.ingredient);
-            return CommandResult.message(MESSAGE_DELETE_INGREDIENT_SUCCESS, this.ingredient);
+            return CommandResult.message("deleted ingredient '%s'", this.ingredient.getName());
         }
     }
 
@@ -101,13 +88,17 @@ public class DeleteIngredientCommand extends Command implements Undoable {
     public CommandResult undo(Model model) {
         requireNonNull(model);
 
+        String action = "";
+
         if (this.quantity.isEmpty() || this.updatedIngredient.getIngredientSets().isEmpty()) {
             model.addIngredient(this.ingredient);
+            action = "re-added";
         } else {
             model.setIngredient(this.updatedIngredient, this.ingredient);
+            action = "updated";
         }
 
-        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.ingredient);
+        return CommandResult.message("undo: %s ingredient '%s'", action, this.ingredient.getName());
     }
 
     @Override

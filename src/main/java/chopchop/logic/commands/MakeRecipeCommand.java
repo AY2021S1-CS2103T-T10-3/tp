@@ -29,11 +29,6 @@ public class MakeRecipeCommand extends Command implements Undoable {
             + "Parameters: INDEX (must be a positive integer) / NAME\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_MAKE_RECIPE_SUCCESS = "Recipe made: %s";
-    public static final String MESSAGE_MAKE_RECIPE_ERROR = "Cannot make recipe due to ingredient '%s'";
-    public static final String MESSAGE_RECIPE_NOT_FOUND = "No recipe named '%s'";
-    public static final String MESSAGE_INGREDIENT_NOT_FOUND = "No ingredient named '%s'";
-    public static final String MESSAGE_UNDO_SUCCESS = "Recipe unmade: %s";
 
     private final ItemReference item;
     private Recipe recipe;
@@ -52,31 +47,28 @@ public class MakeRecipeCommand extends Command implements Undoable {
     public CommandResult execute(Model model, HistoryManager historyManager) throws CommandException {
         requireNonNull(model);
 
-        if (this.item.isIndexed()) {
-            var lastShownList = model.getFilteredRecipeList();
-
-            if (this.item.getZeroIndex() >= lastShownList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_RECIPE_DISPLAYED_INDEX);
-            }
-
-            this.recipe = lastShownList.get(this.item.getZeroIndex());
-        } else {
-            this.recipe = model
-                    .findRecipeWithName(this.item.getName())
-                    .orElseThrow(() -> new CommandException(String.format(MESSAGE_RECIPE_NOT_FOUND,
-                            this.item.getName())));
+        var res = resolveRecipeReference(this.item, model);
+        if (res.isError()) {
+            return CommandResult.error(res.getError());
         }
 
+        this.recipe = res.getValue();
+
         for (var ingredientRef : this.recipe.getIngredients()) {
-            var ingredient = model
-                    .findIngredientWithName(ingredientRef.getName())
-                    .orElseThrow(() -> new CommandException(String.format(MESSAGE_INGREDIENT_NOT_FOUND,
-                            ingredientRef.getName())));
+
+            var find = model.findIngredientWithName(ingredientRef.getName());
+            if (find.isEmpty()) {
+                return CommandResult.error("missing ingredient '%s' (not found)", ingredientRef.getName());
+            }
+
+            var ingredient = find.get();
 
             try {
                 this.ingredients.add(new Pair<>(ingredient, ingredient.split(ingredientRef.getQuantity()).snd()));
+
             } catch (IncompatibleIngredientsException | IllegalValueException e) {
-                throw new CommandException(String.format(MESSAGE_MAKE_RECIPE_ERROR, ingredient.getName()));
+                return CommandResult.error("could not make recipe '%s' (caused by ingredient '%s'): %s",
+                    this.recipe.getName(), ingredient.getName(), e.getMessage());
             }
         }
 
@@ -88,7 +80,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
             }
         }
 
-        return CommandResult.message(MESSAGE_MAKE_RECIPE_SUCCESS, this.recipe);
+        return CommandResult.message("made recipe '%s'", this.recipe.getName());
     }
 
     @Override
@@ -104,7 +96,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
         }
 
         this.ingredients.clear();
-        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.recipe);
+        return CommandResult.message("undo: unmade recipe '%s'", this.recipe.getName());
     }
 
     @Override

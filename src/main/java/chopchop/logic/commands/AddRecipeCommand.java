@@ -28,10 +28,6 @@ public class AddRecipeCommand extends Command implements Undoable {
             + ARG_STEP + " Chop tomatoes. "
             + ARG_STEP + " Add sugar to it and mix well.";
 
-    public static final String MESSAGE_ADD_RECIPE_SUCCESS = "Recipe added: %s";
-    public static final String MESSAGE_DUPLICATE_RECIPE = "Recipe '%s' already exists in the recipe book";
-    public static final String MESSAGE_UNDO_SUCCESS = "Recipe removed: %s";
-
     private final Recipe recipe;
 
     /**
@@ -47,11 +43,11 @@ public class AddRecipeCommand extends Command implements Undoable {
         requireNonNull(model);
 
         if (model.hasRecipe(this.recipe)) {
-            throw new CommandException(String.format(MESSAGE_DUPLICATE_RECIPE, this.recipe.getName()));
+            return CommandResult.error("recipe '%s' already exists", this.recipe.getName());
         }
 
         model.addRecipe(this.recipe);
-        return CommandResult.message(MESSAGE_ADD_RECIPE_SUCCESS, this.recipe);
+        return CommandResult.message("added recipe '%s'", this.recipe.getName());
     }
 
     @Override
@@ -59,7 +55,7 @@ public class AddRecipeCommand extends Command implements Undoable {
         requireNonNull(model);
 
         model.deleteRecipe(this.recipe);
-        return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.recipe);
+        return CommandResult.message("undo: removed recipe '%s'", this.recipe.getName());
     }
 
     @Override

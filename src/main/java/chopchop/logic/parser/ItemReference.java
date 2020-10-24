@@ -22,6 +22,13 @@ public class ItemReference {
     }
 
     /**
+     * Returns the one-based index of the ItemReference, if it was an indexed reference.
+     */
+    public Integer getOneIndex() {
+        return 1 + this.getZeroIndex();
+    }
+
+    /**
      * Returns the lowercased name of the itemreference, if it was a named reference.
      */
     public String getName() {

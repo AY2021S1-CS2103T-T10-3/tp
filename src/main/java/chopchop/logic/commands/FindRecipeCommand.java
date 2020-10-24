@@ -40,8 +40,7 @@ public class FindRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return CommandResult.message(
-                String.format(Messages.MESSAGE_RECIPES_LISTED_OVERVIEW, model.getFilteredRecipeList().size()));
+        return CommandResult.message("found %d recipes", model.getFilteredRecipeList().size());
     }
 
     @Override

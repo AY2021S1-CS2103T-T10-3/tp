@@ -12,8 +12,6 @@ import chopchop.ui.DisplayNavigator;
  */
 public class ListIngredientCommand extends Command {
 
-    public static final String MESSAGE_SUCCESS = "Listed all ingredients";
-
     @Override
     public CommandResult execute(Model model, HistoryManager historyManager) {
         requireNonNull(model);
@@ -23,7 +21,7 @@ public class ListIngredientCommand extends Command {
             DisplayNavigator.loadIngredientPanel();
         }
 
-        return CommandResult.message(MESSAGE_SUCCESS);
+        return CommandResult.message("listed ingredients");
     }
 
     @Override

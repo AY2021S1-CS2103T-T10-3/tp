@@ -27,6 +27,7 @@ public class ItemReferenceTest {
 
         assertEquals(0, ItemReference.ofZeroIndex(0).getZeroIndex());
         assertEquals(3, ItemReference.ofZeroIndex(3).getZeroIndex());
+        assertEquals(4, ItemReference.ofZeroIndex(3).getOneIndex());
         assertThrows(AssertionError.class, () -> ItemReference.ofZeroIndex(-3));
         assertThrows(AssertionError.class, () -> ItemReference.ofOneIndex(0));
 

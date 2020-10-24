@@ -26,10 +26,6 @@ public class AddIngredientCommand extends Command implements Undoable {
             + ARG_QUANTITY + " 3 "
             + ARG_EXPIRY + " 2020-10-05";
 
-    public static final String MESSAGE_ADD_INGREDIENT_SUCCESS = "Ingredient added: %s";
-    public static final String MESSAGE_COMBINE_INGREDIENT_SUCCESS = "Ingredient updated: %s";
-    public static final String MESSAGE_UNDO_SUCCESS = "Ingredient updated: %s";
-
     private final Ingredient ingredient;
     private Ingredient existingIngredient;
     private Ingredient combinedIngredient;
@@ -54,14 +50,16 @@ public class AddIngredientCommand extends Command implements Undoable {
                 this.combinedIngredient = this.existingIngredient.combine(this.ingredient);
                 model.setIngredient(this.existingIngredient, this.combinedIngredient);
 
-                return CommandResult.message(MESSAGE_COMBINE_INGREDIENT_SUCCESS,
-                    this.combinedIngredient);
             } catch (IncompatibleIngredientsException e) {
-                throw new CommandException(e.toString());
+                return CommandResult.error(e.toString());
             }
+
+            return CommandResult.message("updated ingredient '%s'", this.combinedIngredient.getName());
+
         } else {
+
             model.addIngredient(this.ingredient);
-            return CommandResult.message(MESSAGE_ADD_INGREDIENT_SUCCESS, this.ingredient);
+            return CommandResult.message("added ingredient '%s'", this.ingredient.getName());
         }
     }
 
@@ -69,13 +67,23 @@ public class AddIngredientCommand extends Command implements Undoable {
     public CommandResult undo(Model model) {
         requireNonNull(model);
 
+        String action = "";
+        Ingredient ingr = null;
+
         if (this.existingIngredient == null && this.combinedIngredient == null) {
+
             model.deleteIngredient(this.ingredient);
-            return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.ingredient);
+
+            ingr = this.ingredient;
+            action = "removed";
         } else {
             model.setIngredient(this.combinedIngredient, this.existingIngredient);
-            return CommandResult.message(MESSAGE_UNDO_SUCCESS, this.existingIngredient);
+
+            ingr = this.existingIngredient;
+            action = "updated";
         }
+
+        return CommandResult.message("undo: %s ingredient '%s'", action, ingr.getName());
     }
 
     @Override
