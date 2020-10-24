@@ -32,11 +32,11 @@ public class AddIngredientCommandTest {
         var modelStub = new ModelStubAcceptingIngredientAdded();
         var validIngredient = new IngredientBuilder().build();
 
-        var commandResult = new AddIngredientCommand(validIngredient)
-                .execute(modelStub, new CommandTestUtil.HistoryManagerStub());
+        var result = new AddIngredientCommand(validIngredient)
+            .execute(modelStub, new CommandTestUtil.HistoryManagerStub());
 
-        assertEquals(String.format(AddIngredientCommand.MESSAGE_ADD_INGREDIENT_SUCCESS, validIngredient),
-            commandResult.getFeedbackToUser());
+
+        assertTrue(result.didSucceed());
         assertEquals(Arrays.asList(validIngredient), modelStub.ingredientsAdded);
     }
 
@@ -49,13 +49,11 @@ public class AddIngredientCommandTest {
         var modelStub = new ModelStubAcceptingIngredientAdded();
         var historyStub = new CommandTestUtil.HistoryManagerStub();
 
-        assertEquals(String.format(AddIngredientCommand.MESSAGE_ADD_INGREDIENT_SUCCESS, milk1),
-            new AddIngredientCommand(milk1).execute(modelStub, historyStub).getFeedbackToUser());
+        var out = new AddIngredientCommand(milk1).execute(modelStub, historyStub);
+        assertTrue(out.didSucceed());
 
-        var out2 = new AddIngredientCommand(milk2).execute(modelStub, historyStub).getFeedbackToUser();
-        System.err.println(out2);
-
-        assertEquals(String.format(AddIngredientCommand.MESSAGE_COMBINE_INGREDIENT_SUCCESS, milk3), out2);
+        var out2 = new AddIngredientCommand(milk2).execute(modelStub, historyStub);
+        assertTrue(out2.didSucceed());
     }
 
     @Test

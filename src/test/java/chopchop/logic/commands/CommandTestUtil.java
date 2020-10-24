@@ -2,7 +2,6 @@ package chopchop.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static chopchop.testutil.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,49 +28,45 @@ public class CommandTestUtil {
     public static final String VALID_RECIPE_NAME_BANANA_SALAD = "Banana Salad";
     public static final String VALID_RECIPE_NAME_CUSTARD_SALAD = "Custard Salad";
 
+
     /**
-     * Executes the given {@code command}, confirms that <br>
-     * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
-     * - the {@code actualModel} matches {@code expectedModel}
+     * Executes the given command and asserts that it succeeds.
      */
-    public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
-                                            Model expectedModel) {
+    public static void assertCommandSuccess(Command command, Model model, Model expectedModel) {
         try {
-            CommandResult result = command.execute(actualModel, new HistoryManagerStub());
-            assertEquals(expectedCommandResult, result);
-            assertEquals(expectedModel, actualModel);
+            var result = command.execute(model, new HistoryManagerStub());
+            assertTrue(result.didSucceed());
+            assertEquals(expectedModel, model);
+
         } catch (CommandException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
     }
 
     /**
-     * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
-     * that takes a string {@code expectedMessage}.
+     * Executes the given command and asserts that it fails.
      */
-    public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-                                            Model expectedModel) {
-        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
-        assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
-    }
+    public static void assertCommandFailure(Command command, Model model) {
 
-    /**
-     * Executes the given {@code command}, confirms that <br>
-     * - a {@code CommandException} is thrown <br>
-     * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered person list and selected person in {@code actualModel} remain unchanged
-     */
-    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
-        EntryBook<Ingredient> expectedIndBook = new EntryBook<>(actualModel.getIngredientBook());
-        List<Ingredient> expectedFilteredList = new ArrayList<>(actualModel.getFilteredIngredientList());
+        EntryBook<Ingredient> expectedIndBook = new EntryBook<>(model.getIngredientBook());
+        List<Ingredient> expectedFilteredList = new ArrayList<>(model.getFilteredIngredientList());
 
-        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel,
-                new HistoryManagerStub()));
-        assertEquals(expectedIndBook, actualModel.getIngredientBook());
-        assertEquals(expectedFilteredList, actualModel.getFilteredIngredientList());
+        try {
+            var result = command.execute(model, new HistoryManagerStub());
+            assertTrue(result.isError());
+
+
+        } catch (CommandException ce) {
+            assertTrue(true);
+        }
+
+        assertEquals(expectedIndBook, model.getIngredientBook());
+        assertEquals(expectedFilteredList, model.getFilteredIngredientList());
     }
+
+
     /**
      * Updates {@code model}'s filtered list to show only the person at the given {@code targetIndex} in the
      * {@code model}'s address book.

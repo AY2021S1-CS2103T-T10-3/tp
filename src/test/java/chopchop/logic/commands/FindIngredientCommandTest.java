@@ -1,6 +1,5 @@
 package chopchop.logic.commands;
 
-import static chopchop.commons.core.Messages.MESSAGE_INGREDIENTS_LISTED_OVERVIEW;
 import static chopchop.testutil.TypicalIngredients.APRICOT;
 import static chopchop.testutil.TypicalIngredients.BANANA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,21 +48,19 @@ public class FindIngredientCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        var expectedMessage = String.format(MESSAGE_INGREDIENTS_LISTED_OVERVIEW, 0);
         var predicate = preparePredicate(" ");
         var command = new FindIngredientCommand(predicate);
         expectedModel.updateFilteredIngredientList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertCommandSuccess(command, model, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredIngredientList());
     }
 
     @Test
     public void execute_multipleKeywords_multipleIngredientsFound() {
-        var expectedMessage = String.format(MESSAGE_INGREDIENTS_LISTED_OVERVIEW, 2);
         var predicate = preparePredicate("apricot banana");
         var command = new FindIngredientCommand(predicate);
         expectedModel.updateFilteredIngredientList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertCommandSuccess(command, model, expectedModel);
         assertEquals(Arrays.asList(APRICOT, BANANA), model.getFilteredIngredientList());
     }
 

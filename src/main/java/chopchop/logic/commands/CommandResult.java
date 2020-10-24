@@ -50,6 +50,13 @@ public class CommandResult {
     }
 
     /**
+     * Returns true if !isError()
+     */
+    public boolean didSucceed() {
+        return !this.isError;
+    }
+
+    /**
      * Returns the message
      */
     public String getMessage() {
