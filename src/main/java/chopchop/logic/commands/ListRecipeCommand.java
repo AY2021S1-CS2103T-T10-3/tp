@@ -21,7 +21,7 @@ public class ListRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return CommandResult.message("listed recipes");
+        return CommandResult.message("Listed recipes");
     }
 
     @Override

@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import chopchop.commons.core.Messages;
 import chopchop.commons.exceptions.IllegalValueException;
 import chopchop.commons.util.Pair;
 import chopchop.logic.commands.exceptions.CommandException;
@@ -58,7 +57,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
 
             var find = model.findIngredientWithName(ingredientRef.getName());
             if (find.isEmpty()) {
-                return CommandResult.error("missing ingredient '%s' (not found)", ingredientRef.getName());
+                return CommandResult.error("Missing ingredient '%s' (not found)", ingredientRef.getName());
             }
 
             var ingredient = find.get();
@@ -67,7 +66,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
                 this.ingredients.add(new Pair<>(ingredient, ingredient.split(ingredientRef.getQuantity()).snd()));
 
             } catch (IncompatibleIngredientsException | IllegalValueException e) {
-                return CommandResult.error("could not make recipe '%s' (caused by ingredient '%s'): %s",
+                return CommandResult.error("Could not make recipe '%s' (caused by ingredient '%s'): %s",
                     this.recipe.getName(), ingredient.getName(), e.getMessage());
             }
         }
@@ -80,7 +79,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
             }
         }
 
-        return CommandResult.message("made recipe '%s'", this.recipe.getName());
+        return CommandResult.message("Made recipe '%s'", this.recipe.getName());
     }
 
     @Override
@@ -96,7 +95,7 @@ public class MakeRecipeCommand extends Command implements Undoable {
         }
 
         this.ingredients.clear();
-        return CommandResult.message("undo: unmade recipe '%s'", this.recipe.getName());
+        return CommandResult.message("Undo: unmade recipe '%s'", this.recipe.getName());
     }
 
     @Override

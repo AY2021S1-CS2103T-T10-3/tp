@@ -21,7 +21,7 @@ public class ListIngredientCommand extends Command {
             DisplayNavigator.loadIngredientPanel();
         }
 
-        return CommandResult.message("listed ingredients");
+        return CommandResult.message("Listed ingredients");
     }
 
     @Override

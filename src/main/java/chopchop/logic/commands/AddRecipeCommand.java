@@ -43,11 +43,11 @@ public class AddRecipeCommand extends Command implements Undoable {
         requireNonNull(model);
 
         if (model.hasRecipe(this.recipe)) {
-            return CommandResult.error("recipe '%s' already exists", this.recipe.getName());
+            return CommandResult.error("Recipe '%s' already exists", this.recipe.getName());
         }
 
         model.addRecipe(this.recipe);
-        return CommandResult.message("added recipe '%s'", this.recipe.getName());
+        return CommandResult.message("Added recipe '%s'", this.recipe.getName());
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AddRecipeCommand extends Command implements Undoable {
         requireNonNull(model);
 
         model.deleteRecipe(this.recipe);
-        return CommandResult.message("undo: removed recipe '%s'", this.recipe.getName());
+        return CommandResult.message("Undo: removed recipe '%s'", this.recipe.getName());
     }
 
     @Override

@@ -2,7 +2,6 @@ package chopchop.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import chopchop.commons.core.Messages;
 import chopchop.logic.history.HistoryManager;
 import chopchop.model.Model;
 import chopchop.model.attributes.NameContainsKeywordsPredicate;
@@ -40,7 +39,7 @@ public class FindRecipeCommand extends Command {
             DisplayNavigator.loadRecipePanel();
         }
 
-        return CommandResult.message("found %d recipes", model.getFilteredRecipeList().size());
+        return CommandResult.message("Found %d recipes", model.getFilteredRecipeList().size());
     }
 
     @Override

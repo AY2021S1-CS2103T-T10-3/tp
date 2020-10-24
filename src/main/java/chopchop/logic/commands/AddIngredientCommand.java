@@ -54,12 +54,12 @@ public class AddIngredientCommand extends Command implements Undoable {
                 return CommandResult.error(e.toString());
             }
 
-            return CommandResult.message("updated ingredient '%s'", this.combinedIngredient.getName());
+            return CommandResult.message("Updated ingredient '%s'", this.combinedIngredient.getName());
 
         } else {
 
             model.addIngredient(this.ingredient);
-            return CommandResult.message("added ingredient '%s'", this.ingredient.getName());
+            return CommandResult.message("Added ingredient '%s'", this.ingredient.getName());
         }
     }
 
@@ -83,7 +83,7 @@ public class AddIngredientCommand extends Command implements Undoable {
             action = "updated";
         }
 
-        return CommandResult.message("undo: %s ingredient '%s'", action, ingr.getName());
+        return CommandResult.message("Undo: %s ingredient '%s'", action, ingr.getName());
     }
 
     @Override

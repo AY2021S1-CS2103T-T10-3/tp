@@ -55,7 +55,7 @@ public class HistoryManager {
      */
     public CommandResult undo(Model model) throws CommandException {
         if (this.currentIndex == 0) {
-            throw new CommandException(MESSAGE_CANNOT_UNDO);
+            return CommandResult.error("No commands to undo");
         }
 
         this.currentIndex--;
@@ -71,7 +71,7 @@ public class HistoryManager {
      */
     public CommandResult redo(Model model) throws CommandException {
         if (this.currentIndex == this.commandHistory.size()) {
-            throw new CommandException(MESSAGE_CANNOT_REDO);
+            return CommandResult.error("No commands to redo");
         }
 
         var result = this.commandHistory.get(this.currentIndex).redo(model, this);
