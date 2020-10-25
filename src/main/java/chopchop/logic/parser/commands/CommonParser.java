@@ -55,7 +55,7 @@ public class CommonParser {
         var str = args.getRemaining();
 
         if (str.isEmpty()) {
-            return Result.error("no target specified (either 'recipe' or 'ingredient')");
+            return Result.error("no target specified (either 'recipe', 'ingredient' or 'recommendation')");
         }
 
         var x = new StringView(str).bisect(' ').fst().trim();

@@ -128,6 +128,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public ObservableList<Recipe> getRecommendedRecipeList() {
+        return this.model.getRecommendedRecipeList();
+    }
+
+    @Override
     public GuiSettings getGuiSettings() {
         return this.model.getGuiSettings();
     }

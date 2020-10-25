@@ -87,6 +87,11 @@ public interface Logic {
     List<String> getInputHistory(String prefix);
 
     /**
+     * Returns an unmodifiable view of the recommended recipe list.
+     */
+    ObservableList<Recipe> getRecommendedRecipeList();
+
+    /**
      * Set the user prefs' GUI settings.
      */
     void setGuiSettings(GuiSettings guiSettings);

@@ -205,7 +205,16 @@
 #ingredientPanel .viewport {
     -fx-background-color: white;
 }
+#recommendationPanel {
+    -fx-background-color: white;
+}
+#recommendationPanel .viewport {
+    -fx-background-color: white;
+}
 #recipeGridView {
+    -fx-background-color: white;
+}
+#recommendationGridView {
     -fx-background-color: white;
 }
 #textDisplay {

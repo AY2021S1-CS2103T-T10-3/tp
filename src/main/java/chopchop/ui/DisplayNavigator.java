@@ -42,6 +42,13 @@ public class DisplayNavigator {
     }
 
     /**
+     * Loads the RecommendationViewPanel into the swappable display region.
+     */
+    public static void loadRecommendationPanel() {
+        displayController.displayRecommendationList();
+    }
+
+    /**
      * Returns true iff there is a valid display controller.
      */
     public static boolean hasDisplayController() {

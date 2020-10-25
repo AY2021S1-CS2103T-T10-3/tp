@@ -26,6 +26,7 @@ public class ModelManager implements Model {
     private final EntryBook<Ingredient> ingredientBook;
     private final FilteredList<Recipe> filteredRecipes;
     private final FilteredList<Ingredient> filteredIngredients;
+    private final FilteredList<Recipe> recommendedRecipes;
 
     /**
      * Initializes a ModelManager with the given RecipeBook, IngredientBook and userPrefs.
@@ -44,6 +45,8 @@ public class ModelManager implements Model {
 
         this.filteredRecipes = new FilteredList<>(this.recipeBook.getEntryList());
         this.filteredIngredients = new FilteredList<>(this.ingredientBook.getEntryList());
+        this.recommendedRecipes = new FilteredList<>(this.recipeBook.getEntryList());
+        this.updateRecommendedRecipeList();
     }
 
     public ModelManager() {
@@ -213,6 +216,18 @@ public class ModelManager implements Model {
     public void updateFilteredIngredientList(Predicate<? super Ingredient> predicate) {
         requireNonNull(predicate);
         this.filteredIngredients.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<Recipe> getRecommendedRecipeList() {
+        return this.recommendedRecipes;
+    }
+
+    @Override
+    public void updateRecommendedRecipeList() {
+        this.recommendedRecipes.setPredicate(recipe -> recipe.getIngredients().stream()
+                .allMatch(ingredientRef -> this.getIngredientBook().getEntryList().stream()
+                        .anyMatch(ingredient -> ingredientRef.getName().equalsIgnoreCase(ingredient.getName()))));
     }
 
     @Override

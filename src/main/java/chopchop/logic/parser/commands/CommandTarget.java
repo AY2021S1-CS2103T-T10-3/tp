@@ -10,19 +10,14 @@ import java.util.Optional;
  */
 public enum CommandTarget {
     RECIPE,
-    INGREDIENT;
+    INGREDIENT,
+    RECOMMENDATION;
 
     /**
      * Creates a {@code CommandTarget} from its name.
      */
     public static Optional<CommandTarget> of(String str) {
-        if (str.equals("recipe")) {
-            return Optional.of(RECIPE);
-        } else if (str.equals("ingredient")) {
-            return Optional.of(INGREDIENT);
-        } else {
-            return Optional.empty();
-        }
+        return of(str, false);
     }
 
     /**
@@ -33,6 +28,8 @@ public enum CommandTarget {
             return Optional.of(RECIPE);
         } else if (str.equals("ingredient") || (acceptsPlural && str.equals("ingredients"))) {
             return Optional.of(INGREDIENT);
+        } else if (str.equals("recommendation") || (acceptsPlural && str.equals("recommendations"))) {
+            return Optional.of(RECOMMENDATION);
         } else {
             return Optional.empty();
         }

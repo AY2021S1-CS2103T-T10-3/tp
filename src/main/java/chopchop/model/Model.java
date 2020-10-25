@@ -149,4 +149,13 @@ public interface Model {
      */
     void updateFilteredIngredientList(Predicate<? super Ingredient> predicate);
 
+    /**
+     * Returns an unmodifiable view of the recommended recipe list.
+     */
+    ObservableList<Recipe> getRecommendedRecipeList();
+
+    /**
+     * Updates the recommended recipe list.
+     */
+    void updateRecommendedRecipeList();
 }
