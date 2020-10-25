@@ -19,6 +19,9 @@ public class RecommendationManager {
     private final FilteredList<Recipe> expiringRecipes;
     private final FilteredList<Recipe> oldRecipes;
 
+    /**
+     * Recommendation Manager for recommendations.
+     */
     public RecommendationManager(Model model) {
         this.recommendedRecipes = new FilteredList<>(model.getRecipeBook().getEntryList(),
                 this.getRecommendedRecipesPredicate(model));

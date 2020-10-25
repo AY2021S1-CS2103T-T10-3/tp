@@ -145,14 +145,4 @@ public abstract class ModelStub implements Model {
     public Optional<Ingredient> findIngredientWithName(String name) {
         throw new AssertionError("This method should not be called.");
     }
-
-    @Override
-    public ObservableList<Recipe> getRecommendedRecipeList() {
-        throw new AssertionError("This method should not be called.");
-    }
-
-    @Override
-    public void updateRecommendedRecipeList() {
-        throw new AssertionError("This method should not be called.");
-    }
 }
