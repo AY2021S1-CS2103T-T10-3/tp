@@ -148,14 +148,4 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredIngredientList(Predicate<? super Ingredient> predicate);
-
-    /**
-     * Returns an unmodifiable view of the recommended recipe list.
-     */
-    ObservableList<Recipe> getRecommendedRecipeList();
-
-    /**
-     * Updates the recommended recipe list.
-     */
-    void updateRecommendedRecipeList();
 }

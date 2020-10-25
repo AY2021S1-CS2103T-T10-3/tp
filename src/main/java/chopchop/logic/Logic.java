@@ -7,6 +7,7 @@ import chopchop.commons.core.GuiSettings;
 import chopchop.logic.commands.CommandResult;
 import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.logic.parser.exceptions.ParseException;
+import chopchop.model.Model;
 import chopchop.model.ReadOnlyEntryBook;
 import chopchop.model.ingredient.Ingredient;
 import chopchop.model.recipe.Recipe;
@@ -90,6 +91,16 @@ public interface Logic {
      * Returns an unmodifiable view of the recommended recipe list.
      */
     ObservableList<Recipe> getRecommendedRecipeList();
+
+    /**
+     * Returns an unmodifiable view of the recommended recipe list that have ingredients that expire soon.
+     */
+    ObservableList<Recipe> getExpiringRecipeList();
+
+    /**
+     * Returns an unmodifiable view of the recommended recipe list that have not been made for a long time.
+     */
+//    ObservableList<Recipe> getOldRecipeList();
 
     /**
      * Set the user prefs' GUI settings.

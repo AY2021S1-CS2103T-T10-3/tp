@@ -27,7 +27,8 @@ public class DisplayController extends UiPart<Region> {
     private NotificationWindow notificationWindow;
     private ObservableList<Recipe> recipeObservableList;
     private ObservableList<Ingredient> ingredientObservableList;
-    private ObservableList<Recipe> recommendationObservableList;
+    private ObservableList<Recipe> recommendedRecipeObservableList;
+    private ObservableList<Recipe> expiringRecipeObservableList;
 
     @FXML
     private StackPane displayAreaPlaceholder;
@@ -42,7 +43,8 @@ public class DisplayController extends UiPart<Region> {
         notificationWindow = new NotificationWindow();
         recipeObservableList = logic.getFilteredRecipeList();
         ingredientObservableList = logic.getFilteredIngredientList();
-        recommendationObservableList = logic.getRecommendedRecipeList();
+        recommendedRecipeObservableList = logic.getRecommendedRecipeList();
+        expiringRecipeObservableList = logic.getExpiringRecipeList();
 
         recipeObservableList.addListener((ListChangeListener<Recipe>) c -> {
             c.next();
@@ -108,7 +110,7 @@ public class DisplayController extends UiPart<Region> {
      * Displays the RecommendationViewPanel on the swappable display region.
      */
     protected void displayRecommendationList() {
-        RecommendationViewPanel recommendationViewPanel = new RecommendationViewPanel(recommendationObservableList);
+        RecommendationViewPanel recommendationViewPanel = new RecommendationViewPanel(recommendedRecipeObservableList);
         displayAreaPlaceholder.getChildren().setAll(recommendationViewPanel.getRoot());
     }
 

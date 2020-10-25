@@ -14,6 +14,7 @@ import chopchop.logic.commands.exceptions.CommandException;
 import chopchop.logic.history.HistoryManager;
 import chopchop.logic.parser.CommandParser;
 import chopchop.logic.parser.exceptions.ParseException;
+import chopchop.logic.recommendation.RecommendationManager;
 import chopchop.model.Model;
 import chopchop.model.ReadOnlyEntryBook;
 import chopchop.model.ingredient.Ingredient;
@@ -31,6 +32,7 @@ public class LogicManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final HistoryManager historyManager;
+    private final RecommendationManager recommendationManager;
     private final CommandParser parser;
     private final AutoCompleter completer;
 
@@ -41,6 +43,7 @@ public class LogicManager implements Logic {
         this.model = model;
         this.storage = storage;
         this.historyManager = new HistoryManager();
+        this.recommendationManager = new RecommendationManager(model);
         this.parser = new CommandParser();
         this.completer = new AutoCompleter();
     }
@@ -129,7 +132,12 @@ public class LogicManager implements Logic {
 
     @Override
     public ObservableList<Recipe> getRecommendedRecipeList() {
-        return this.model.getRecommendedRecipeList();
+        return this.recommendationManager.getRecommendedRecipeList();
+    }
+
+    @Override
+    public ObservableList<Recipe> getExpiringRecipeList() {
+        return this.recommendationManager.getExpiringRecipeList();
     }
 
     @Override
