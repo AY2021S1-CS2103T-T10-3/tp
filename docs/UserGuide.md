@@ -403,6 +403,48 @@ Figure 6.3: <i>Back to the main recipe list</i>
 
 
 
+
+
+
+### Filtering Recipes — **`filter`**`recipe`
+This command filters all recipes and lists those containing all ingredients and tags specified in the command.
+
+Usage: `filter recipe </SEARCH_FIELD KEYWORDS> [</SEARCH_FIELD KEYWORDS>]...` 
+- `/SEARCH_FIELD` must be either `/tag` or `/ingredient`, followed by the 'tag' or 'ingredient' name, which does not have to be complete.
+- Multiple search terms from the same category are allowed. e.g. `/tag movie /tag family`
+- Search terms can be placed in any order.
+- The filtering is case-insensitive and allows spaces between keywords in a single search term. e.g. `/tag family favourite` is allowed.
+
+Constraints:
+- At least one search term must be given, and it should be a search on either 'tag' or 'ingredient'.
+
+Examples:
+- `filter recipe /tag family reunion` will match **Spring Rolls** and **Hot Pot**, the only two recipes with 'tag' **family reunion**.
+- `filter recipe /tag snacks /tag sweet` will match **Chocolate Cookie** and **Gummy Bears**, the only two recipes with the 'tags' **snacks** and **sweet**.
+- `filter recipe /ingredient egg` will match **Egg Tart** and **Scrambled Eggs**, the only two recipes using the 'ingredient' **egg**.
+- `filter recipe /ingredient chicken /ingredient cheese /ingredient pineapple` will match **Chicken Quesadilla**, the only recipe containing 'ingredients' **chicken**, **cheese**, and **pineapple**.
+- `filter recipe /tag local dish /ingredient chicken /ingredient white rice /tag family favourite` will match **Chicken Rice**, the only recipe that matches all criteria specified.
+
+To illustrate, suppose you want to search for recipes with 'tags' **Christmas** and **home baked**, and use the 'ingredients' **Ginger Root**, **Honey** and **Molasses**, you could use `filter recipe /tag christmas /ingredient ginger root /tag home baked /ingredient honey /ingredient molasses`:
+<div style="text-align: center; padding-bottom: 2em">
+<img src="images/ug/filter_recipe_1.png" width="75%" /> <br />
+Figure 7.1: <i>The starting state of the application</i>
+</div>
+
+After executing the command, similar to the effect of **find recipe** command, the recipe list has changed, showing only the matching recipe, **gingerbread man**.
+
+<div style="text-align: center; padding-bottom: 2em">
+<img src="images/ug/filter_recipe_2.png" width="75%" /> <br />
+Figure 7.2: <i>The recipe matching all criteria provided</i>
+</div>
+
+Again, to reset the search filter or go back to the full recipe view, you can click the Recipes button or run the `list recipes` command.
+
+
+
+
+
+
 ### Listing Ingredients — **`list`**`ingredients`
 This command shows a list of all recipes in ChopChop. As with the `list recipes` command, you can use this command to switch between panes without clicking, or to reset any filters.
 
@@ -436,35 +478,35 @@ Suppose you just finished a grocery run, and want to add the items to ChopChop. 
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/add_ingredient_1.png" width="75%" /> <br />
-Figure 7.1: <i>Adding 2 litres of milk</i>
+Figure 8.1: <i>Adding 2 litres of milk</i>
 </div>
 
 Since ChopChop did not know about 'milk' previously, a new ingredient entry is created for it:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/add_ingredient_2.png" width="75%" /> <br />
-Figure 7.2: <i>The newly added milk ingredient</i>
+Figure 8.2: <i>The newly added milk ingredient</i>
 </div>
 
 Next, suppose you also bought 24 blueberries:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/add_ingredient_3.png" width="75%" /> <br />
-Figure 7.3: <i>Adding 24 blueberries</i>
+Figure 8.3: <i>Adding 24 blueberries</i>
 </div>
 
 This time, since ChopChop already knew about blueberries, our previous 5 blueberries now become 29:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/add_ingredient_4.png" width="75%" /> <br />
-Figure 7.4: <i>You now have 29 blueberries</i>
+Figure 8.4: <i>You now have 29 blueberries</i>
 </div>
 
 If you try to add an ingredient with incompatible quantities (for example, suppose you did not want to count the blueberries individually, and you only know that you bought a 400 gram box), ChopChop will display an error message, and not update the ingredient:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/add_ingredient_5.png" width="75%" /> <br />
-Figure 7.5: <i>Ingredients must have compatible units to be combined</i>
+Figure 8.5: <i>Ingredients must have compatible units to be combined</i>
 </div>
 
 
@@ -493,14 +535,14 @@ To illustrate, suppose that you poured yourself a glass of cold milk to drink, w
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/delete_ingredient_1.png" width="75%" /> <br />
-Figure 8.1: <i>Removing 250ml of milk</i>
+Figure 9.1: <i>Removing 250ml of milk</i>
 </div>
 
 Notice how the amount of milk decreased from 2 litres to 1.75 litres:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/delete_ingredient_2.png" width="75%" /> <br />
-Figure 8.2: <i>You now only have 1.75 litres of milk left</i>
+Figure 9.2: <i>You now only have 1.75 litres of milk left</i>
 </div>
 
 
@@ -520,18 +562,56 @@ For example, suppose you wanted to find all ingredients containing fish (not in 
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/find_ingredient_1.png" width="75%" /> <br />
-Figure 9.1: <i>The complete ingredient list</i>
+Figure 10.1: <i>The complete ingredient list</i>
 </div>
 
 Now, only the matching ingredients are shown:
 
 <div style="text-align: center; padding-bottom: 2em">
 <img src="images/ug/find_ingredient_2.png" width="75%" /> <br />
-Figure 9.2: <i>Only ingredients containing 'fish' in their name are shown</i>
+Figure 10.2: <i>Only ingredients containing 'fish' in their name are shown</i>
 </div>
 
 Again, you can either click the Ingredients button, or use `list ingredients` to clear the search filter.
 
+
+
+
+
+
+### Filtering Ingredients — **`filter`**`ingredient`
+This command filters all ingredients and lists those that match all the tags and expiry dates specified in the command.
+
+Usage: `filter ingredient </SEARCH_FIELD KEYWORDS> [</SEARCH_FIELD KEYWORDS>]...` 
+- `/SEARCH_FIELD` must be either `/tag` or `/expiry`, followed by the 'tag name' or 'expiry date'. The 'tag' name does not have to be complete.
+- `/expiry EXPIRY_DATE` filters the ingredients and only lists those that expire before the date provided.
+- When there are multiple `/expiry EXPIRY_DATE` in the search, only the earliest 'expiry date' will be considered.
+- Except for the changes in the search fields, this feature works identically to the `filter recipe` command. [above](#filtering-recipes--filterrecipe)
+
+Constraints:
+- At least one search term must be given, and it should be a search on either 'tag' or 'expiry date'.
+
+Examples:
+- `filter ingredient /tag bitter taste` will match **Bitter Melon** and **Dark Chocolate**, the only two ingredients with the 'tag' **bitter taste**.
+- `filter ingredient /tag frequently used /tag sweet` will match **Sugar**, the only ingredient with the two 'tags' **frequently used** and **sweet**.
+- `filter ingredient /expiry 2020-12-01` will match **Apple** and **Chocolate**, the only two ingredients expiring before **2020-12-01**.
+- `filter ingredient /expiry 2022-12-31 /expiry 2020-10-31 /expiry 2023-01-01` will match **Chocolate**, the only ingredient expiring before **2020-10-31**.
+- `filter ingredient /tag powdery /expiry 2020-12-31 /expiry 2020-12-01 /tag bakery` will match **baking soda**, the only ingredient that matches all criteria specified.
+
+To illustrate, suppose you want to search for ingredients with 'tags' **all time** and **favourite**, and expire earlier than the 'expiry date' **2020-12-31**, you could use `filter ingredient /tag all time /expiry 2020-12-31 /expiry 2021-01-01 /tag favourite`:
+<div style="text-align: center; padding-bottom: 2em">
+<img src="images/ug/filter_ingredient_1.png" width="75%" /> <br />
+Figure 7.1: <i>The starting state of the application</i>
+</div>
+
+After executing the command, similar to the effect of **filter recipe** command, the ingredient list has changed, showing only the matching ingredient, **apple**.
+
+<div style="text-align: center; padding-bottom: 2em">
+<img src="images/ug/filter_ingredient_2.png" width="75%" /> <br />
+Figure 7.2: <i>The ingredient matching all criteria provided</i>
+</div>
+
+Again, to reset the search filter or go back to the full ingredient view, you can click the Ingredients button or run the `list ingredients` command:
 
 
 
