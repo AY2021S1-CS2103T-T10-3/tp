@@ -16,7 +16,7 @@ import chopchop.logic.parser.ArgName;
 import chopchop.logic.parser.CommandArguments;
 import chopchop.model.attributes.ExpiryDate;
 import chopchop.model.attributes.ExpiryDateMatchesKeywordsPredicate;
-import chopchop.model.attributes.IngredientsContainsKeywordsPredicate;
+import chopchop.model.attributes.IngredientsContainKeywordsPredicate;
 import chopchop.model.attributes.TagContainsKeywordsPredicate;
 
 import java.util.List;
@@ -112,7 +112,7 @@ public class FilterCommandParser {
 
         return Result.of(new FilterRecipeCommand(
             tags.isEmpty() ? null : new TagContainsKeywordsPredicate(tags),
-            ingredients.isEmpty() ? null : new IngredientsContainsKeywordsPredicate(ingredients)
+            ingredients.isEmpty() ? null : new IngredientsContainKeywordsPredicate(ingredients)
         ));
     }
 

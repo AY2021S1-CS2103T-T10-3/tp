@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import chopchop.logic.history.HistoryManager;
 import chopchop.model.Model;
-import chopchop.model.attributes.IngredientsContainsKeywordsPredicate;
+import chopchop.model.attributes.IngredientsContainKeywordsPredicate;
 import chopchop.model.attributes.TagContainsKeywordsPredicate;
 import chopchop.model.recipe.Recipe;
 import chopchop.ui.DisplayNavigator;
@@ -25,7 +25,7 @@ public class FilterRecipeCommand extends Command {
             + "Example: " + COMMAND_WORD + " /ingredient apple /tag home /ingredient chocolate /tag snacks"
             + "Note: Tag(s) and Ingredient names should be split into single words during your search.";
 
-    private final IngredientsContainsKeywordsPredicate ingredientPredicates;
+    private final IngredientsContainKeywordsPredicate ingredientPredicates;
     private final TagContainsKeywordsPredicate tagPredicates;
 
     /**
@@ -34,7 +34,7 @@ public class FilterRecipeCommand extends Command {
      * @param tagPredicates
      */
     public FilterRecipeCommand(TagContainsKeywordsPredicate tagPredicates,
-            IngredientsContainsKeywordsPredicate indPredicates) {
+            IngredientsContainKeywordsPredicate indPredicates) {
         this.tagPredicates = tagPredicates;
         this.ingredientPredicates = indPredicates;
     }

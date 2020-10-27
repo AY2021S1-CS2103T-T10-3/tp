@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
-import chopchop.model.attributes.IngredientsContainsKeywordsPredicate;
+import chopchop.model.attributes.IngredientsContainKeywordsPredicate;
 import chopchop.model.attributes.TagContainsKeywordsPredicate;
 import chopchop.model.usage.IngredientUsage;
 import chopchop.model.usage.RecipeUsage;
@@ -33,9 +33,9 @@ public class FilterRecipeCommandTest {
         var firstTagPredicate = new TagContainsKeywordsPredicate(Collections.singletonList("firstTag"));
         var secondTagPredicate = new TagContainsKeywordsPredicate(Collections.singletonList("secondTag"));
 
-        var firstIngredientPredicate = new IngredientsContainsKeywordsPredicate(
+        var firstIngredientPredicate = new IngredientsContainKeywordsPredicate(
             Collections.singletonList("firstIngredient"));
-        var secondIngredientPredicate = new IngredientsContainsKeywordsPredicate(
+        var secondIngredientPredicate = new IngredientsContainKeywordsPredicate(
             Collections.singletonList("secondIngredient"));
 
         var filterFirstCommand = new FilterRecipeCommand(firstTagPredicate, firstIngredientPredicate);
@@ -119,7 +119,7 @@ public class FilterRecipeCommandTest {
     /**
      * Parses {@code userInputs} into a {@code IngredientContainsKeywordsPredicate}.
      */
-    private IngredientsContainsKeywordsPredicate prepareIngredientPredicate(String... userInputs) {
-        return new IngredientsContainsKeywordsPredicate(Arrays.asList(userInputs));
+    private IngredientsContainKeywordsPredicate prepareIngredientPredicate(String... userInputs) {
+        return new IngredientsContainKeywordsPredicate(Arrays.asList(userInputs));
     }
 }

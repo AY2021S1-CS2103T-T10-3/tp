@@ -8,10 +8,10 @@ import java.util.function.Predicate;
 /**
  * Tests that an item's {@code Name} matches any of the keywords given.
  */
-public class IngredientsContainsKeywordsPredicate implements Predicate<Recipe> {
+public class IngredientsContainKeywordsPredicate implements Predicate<Recipe> {
     private final List<String> keywords;
 
-    public IngredientsContainsKeywordsPredicate(List<String> keywords) {
+    public IngredientsContainKeywordsPredicate(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -33,8 +33,8 @@ public class IngredientsContainsKeywordsPredicate implements Predicate<Recipe> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof IngredientsContainsKeywordsPredicate // instanceof handles nulls
-                && this.keywords.equals(((IngredientsContainsKeywordsPredicate) other).keywords)); // state check
+                || (other instanceof IngredientsContainKeywordsPredicate // instanceof handles nulls
+                && this.keywords.equals(((IngredientsContainKeywordsPredicate) other).keywords)); // state check
     }
 
 }

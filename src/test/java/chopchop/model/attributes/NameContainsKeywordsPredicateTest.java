@@ -37,7 +37,7 @@ public class NameContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different values -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -78,12 +78,12 @@ public class NameContainsKeywordsPredicateTest {
         assertFalse(predicate.test(new IngredientBuilder().withName("Apricot Banana").build()));
         assertFalse(predicate.test(new RecipeBuilder().withName("Apricot Banana").build()));
 
-        // Keywords match phone, email and address, but does not match name
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("12345", "Main", "Street"));
+        // For ingredient, keyword matches expiry date, but do not match name
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("2020-05-10"));
         assertFalse(predicate.test(new IngredientBuilder().withName("Alice")
             .withDate("2020-05-10").build()));
 
-        // For Recipe, keywords match ingredient name and step content, but does not match name
+        // For Recipe, keywords match ingredient name and step content, but do not match name
         predicate = new NameContainsKeywordsPredicate(Arrays.asList(
                 "Banana", "Cut"));
         assertFalse(predicate.test(new RecipeBuilder().withName("Apricot Salad")
