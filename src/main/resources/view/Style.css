@@ -250,11 +250,11 @@
     -fx-background-radius: 6;
     -fx-border-color: #3f51b5;
     -fx-border-radius: 6;
-    -fx-padding: 12 8;
+    -fx-padding: 12 20 0 12;
 }
 
 .recommendationContainer {
-    -fx-padding: 0 10 0 0;
+    -fx-padding: 0 16 0 0;
 }
 
 .recommendationText,
@@ -262,4 +262,5 @@
 .recommendationText .scroll-pane .viewport,
 .recommendationText .scroll-pane .content {
     -fx-background-color: #e8eaf6;
+    -fx-padding: 0;
 }

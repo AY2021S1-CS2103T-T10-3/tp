@@ -10,13 +10,14 @@
       <URL value="@Style.css" />
    </stylesheets>
    <children>
+      <TextArea fx:id="recommendationText" styleClass="recommendationText" maxHeight="58.0" maxWidth="390.0" text="" wrapText="true" editable="false"/>
       <HBox styleClass="recommendationCard" alignment="CENTER">
-         <HBox fx:id="expiringRecipeContainer" styleClass="recommendationContainer" minHeight="180" />
-         <TextArea fx:id="expiringRecipeText" styleClass="recommendationText" maxHeight="105.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
+         <HBox fx:id="expiringRecipeContainer" styleClass="recommendationContainer" minHeight="158" />
+         <TextArea fx:id="expiringRecipeText" styleClass="recommendationText" maxHeight="60.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
       </HBox>
       <HBox styleClass="recommendationCard" alignment="CENTER">
-         <HBox fx:id="oldRecipeContainer" styleClass="recommendationContainer" minHeight="180" />
-         <TextArea fx:id="oldRecipeText" styleClass="recommendationText" maxHeight="105.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
+         <HBox fx:id="oldRecipeContainer" styleClass="recommendationContainer" minHeight="158" />
+         <TextArea fx:id="oldRecipeText" styleClass="recommendationText" maxHeight="42.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
       </HBox>
    </children>
 </VBox>

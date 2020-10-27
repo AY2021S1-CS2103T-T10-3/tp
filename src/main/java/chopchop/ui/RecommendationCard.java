@@ -15,12 +15,18 @@ import javafx.scene.layout.Region;
 public class RecommendationCard extends UiPart<Region> {
 
     private static final String FXML = "RecommendationCard.fxml";
-    private static final String EXPIRING_MESSAGE = "This recipe makes use of ingredients you own that are going to expire soon. "
-    + "Perhaps you would like to consider making this recipe?";
+    private static final String RECOMMENDED_MESSAGE = "These recommended recipes all contain ingredients that you " +
+            "currently have.";
+    private static final String EXPIRING_MESSAGE = "Consider cooking this recipe to use ingredients that are about to" +
+            " expire.";
+    private static final String OLD_MESSAGE = "Consider cooking this recipe that you haven't tried for a while.";
 
     public final Recipe recipe;
 
     private final int id;
+
+    @FXML
+    private TextArea recommendationText;
 
     @FXML
     private TextArea expiringRecipeText;
@@ -42,12 +48,13 @@ public class RecommendationCard extends UiPart<Region> {
         this.recipe = recipe;
         this.id = id;
 
+        recommendationText.setText(RECOMMENDED_MESSAGE);
         RecipeCard expiringRecipeCard = new RecipeCard(recipe, id);
         expiringRecipeContainer.getChildren().add(expiringRecipeCard.getRoot());
         expiringRecipeText.setText(EXPIRING_MESSAGE);
         RecipeCard oldRecipeCard = new RecipeCard(recipe, id);
         oldRecipeContainer.getChildren().add(oldRecipeCard.getRoot());
-        oldRecipeText.setText(EXPIRING_MESSAGE);
+        oldRecipeText.setText(OLD_MESSAGE);
     }
 
     @Override
