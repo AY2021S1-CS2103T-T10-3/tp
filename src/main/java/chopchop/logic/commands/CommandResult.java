@@ -2,9 +2,13 @@
 
 package chopchop.logic.commands;
 
-import static java.util.Objects.requireNonNull;
+import static chopchop.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import chopchop.commons.util.Pair;
 
 /**
  * Represents the result of a command execution.
@@ -15,17 +19,22 @@ public class CommandResult {
     private final boolean isError;
     private final boolean showHelp;
     private final boolean shouldExit;
+    private final boolean isStatsOutput;
+    private final List<Pair<String, String>> statsMessage;
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    private CommandResult(String message, boolean isError, boolean shouldExit, boolean showHelp) {
-        requireNonNull(message);
+    private CommandResult(String message, boolean isError, boolean shouldExit, boolean showHelp, boolean isStatsOutput,
+                          List<Pair<String, String>> statsMessage) {
+        requireAllNonNull(message, statsMessage);
 
         this.message = message;
         this.isError = isError;
         this.showHelp = showHelp;
         this.shouldExit = shouldExit;
+        this.isStatsOutput = isStatsOutput;
+        this.statsMessage = statsMessage;
     }
 
     /**
@@ -63,6 +72,20 @@ public class CommandResult {
         return this.message;
     }
 
+    /**
+     * Returns true if the command result comes from stats command.
+     */
+    public boolean isStatsOutput() {
+        return this.isStatsOutput;
+    }
+
+    /**
+     * Returns the list to be displayed in list view of stats box.
+     */
+    public ArrayList<Pair<String, String>> getStatsMessage() {
+        return new ArrayList<>(this.statsMessage);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -91,7 +114,8 @@ public class CommandResult {
      */
     public static CommandResult message(String message, Object... args) {
         return new CommandResult(String.format(message, args),
-            /* isError: */ false, /* shouldExit: */ false, /* showHelp: */ false);
+            /* isError: */ false, /* shouldExit: */ false, /* showHelp: */ false, false,
+            new ArrayList<>());
     }
 
     /**
@@ -101,7 +125,8 @@ public class CommandResult {
      */
     public static CommandResult error(String error, Object... args) {
         return new CommandResult(String.format(error, args),
-            /* isError: */ true, /* shouldExit: */ false, /* showHelp: */ false);
+            /* isError: */ true, /* shouldExit: */ false, /* showHelp: */ false, false,
+            new ArrayList<>());
     }
 
     /**
@@ -109,7 +134,7 @@ public class CommandResult {
      */
     public static CommandResult help() {
         return new CommandResult("", /* isError: */ false, /* shouldExit: */ false,
-            /* showHelp: */ true);
+            /* showHelp: */ true, false, new ArrayList<>());
     }
 
     /**
@@ -117,6 +142,16 @@ public class CommandResult {
      */
     public static CommandResult exit() {
         return new CommandResult("", /* isError: */ false, /* shouldExit: */ true,
-            /* showHelp: */ false);
+            /* showHelp: */ false, false, new ArrayList<>());
+    }
+
+    /**
+     * Constructs a new command result from stats that contains the list of values to be output in stats box and the
+     * message that indicates the status of the command.
+     */
+    public static CommandResult statsMessage(List<Pair<String, String>> outputList, String message, Object... args) {
+        return new CommandResult(String.format(message, args),
+            /* isError: */ false, /* shouldExit: */ false, /* showHelp: */ false, true,
+            outputList);
     }
 }
