@@ -1,8 +1,11 @@
 package chopchop.ui;
 
+import java.util.logging.Filter;
+
 import chopchop.model.recipe.Recipe;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
@@ -18,7 +21,8 @@ public class RecommendationViewPanel extends UiPart<Region> {
 
     private final TextDisplay textDisplay;
 
-    private ObservableList<Recipe> recommendationObservableList;
+    private FilteredList<Recipe> recommendedRecipeObservableList;
+    private FilteredList<Recipe> expiringRecipeObservableList;
     // Only 3 rows of recipes will be displayed.
 
     @FXML
@@ -30,11 +34,13 @@ public class RecommendationViewPanel extends UiPart<Region> {
     /**
      * Creates a {@code RecipeView} with the given {@code ObservableList}.
      */
-    public RecommendationViewPanel(ObservableList<Recipe> recommendationList) {
+    public RecommendationViewPanel(FilteredList<Recipe> recommendationList,
+                                   FilteredList<Recipe> expiringList) {
         super(FXML);
         textDisplay = new TextDisplay(EMPTY_PROMPT);
-        recommendationObservableList = recommendationList;
-        recommendationObservableList.addListener((ListChangeListener<Recipe>) c -> fillDisplay());
+        recommendedRecipeObservableList = recommendationList;
+        expiringRecipeObservableList = expiringList;
+        recommendedRecipeObservableList.addListener((ListChangeListener<Recipe>) c -> fillDisplay());
         fillDisplay();
     }
 
@@ -60,10 +66,19 @@ public class RecommendationViewPanel extends UiPart<Region> {
     private void populate() {
         int row;
         int col = START_COL;
-        for (int i = 0; i < recommendationObservableList.size(); i++) {
-            Recipe recipe = recommendationObservableList.get(i);
+
+        if (!expiringRecipeObservableList.isEmpty()) {
+            Recipe expiringRecipe = expiringRecipeObservableList.get(0);
+            RecommendationCard expiringCard = new RecommendationCard(expiringRecipe,
+                    expiringRecipeObservableList.getSourceIndex(expiringRecipeObservableList.indexOf(expiringRecipe)) + 1);
+            recommendationGridView.add(expiringCard.getRoot(), 0, 0, 1, 3);
+            col++;
+        }
+
+        for (int i = 0; i < recommendedRecipeObservableList.size(); i++) {
+            Recipe recipe = recommendedRecipeObservableList.get(i);
             // Change from 0 based index to 1 based index
-            RecipeCard recipeCard = new RecipeCard(recipe, i + 1);
+            RecipeCard recipeCard = new RecipeCard(recipe, recommendedRecipeObservableList.getSourceIndex(i) + 1);
             row = calculate_row(i);
             if (row == 0) {
                 col++;
@@ -77,6 +92,6 @@ public class RecommendationViewPanel extends UiPart<Region> {
     }
 
     private boolean isEmpty() {
-        return recommendationGridView.getChildren().contains(textDisplay) || recommendationObservableList.isEmpty();
+        return recommendationGridView.getChildren().contains(textDisplay) || recommendedRecipeObservableList.isEmpty();
     }
 }

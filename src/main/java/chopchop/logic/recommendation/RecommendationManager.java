@@ -38,11 +38,11 @@ public class RecommendationManager {
         });
     }
 
-    public ObservableList<Recipe> getRecommendedRecipeList() {
+    public FilteredList<Recipe> getRecommendedRecipeList() {
         return this.recommendedRecipes;
     }
 
-    public ObservableList<Recipe> getExpiringRecipeList() {
+    public FilteredList<Recipe> getExpiringRecipeList() {
         return this.expiringRecipes;
     }
 

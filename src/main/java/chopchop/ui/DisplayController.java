@@ -5,6 +5,7 @@ import chopchop.model.ingredient.Ingredient;
 import chopchop.model.recipe.Recipe;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -27,8 +28,8 @@ public class DisplayController extends UiPart<Region> {
     private NotificationWindow notificationWindow;
     private ObservableList<Recipe> recipeObservableList;
     private ObservableList<Ingredient> ingredientObservableList;
-    private ObservableList<Recipe> recommendedRecipeObservableList;
-    private ObservableList<Recipe> expiringRecipeObservableList;
+    private FilteredList<Recipe> recommendedRecipeObservableList;
+    private FilteredList<Recipe> expiringRecipeObservableList;
 
     @FXML
     private StackPane displayAreaPlaceholder;
@@ -110,7 +111,8 @@ public class DisplayController extends UiPart<Region> {
      * Displays the RecommendationViewPanel on the swappable display region.
      */
     protected void displayRecommendationList() {
-        RecommendationViewPanel recommendationViewPanel = new RecommendationViewPanel(recommendedRecipeObservableList);
+        RecommendationViewPanel recommendationViewPanel = new RecommendationViewPanel(recommendedRecipeObservableList,
+                expiringRecipeObservableList);
         displayAreaPlaceholder.getChildren().setAll(recommendationViewPanel.getRoot());
     }
 

@@ -45,7 +45,7 @@
     -fx-background-color: #d7ccc8;
 }
 .recipe-button:pressed {
-    -fx-background-color: transparent;
+    -fx-background-color: #d7ccc8;
 }
 .label-button {
     -fx-font-family: "Helvetica";
@@ -241,4 +241,25 @@
 #anchor {
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
+}
+.recommendationCardContainer {
+    -fx-background-color: #e8eaf6;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI";
+    -fx-font-color: #212121;
+    -fx-background-radius: 6;
+    -fx-border-color: #3f51b5;
+    -fx-border-radius: 6;
+    -fx-padding: 12 8;
+}
+
+.recommendationContainer {
+    -fx-padding: 0 10 0 0;
+}
+
+.recommendationText,
+.recommendationText .scroll-pane,
+.recommendationText .scroll-pane .viewport,
+.recommendationText .scroll-pane .content {
+    -fx-background-color: #e8eaf6;
 }

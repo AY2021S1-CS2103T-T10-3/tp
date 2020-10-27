@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="recommendationCardContainer" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"  alignment="CENTER">
+   <stylesheets>
+      <URL value="@Style.css" />
+   </stylesheets>
+   <children>
+      <HBox styleClass="recommendationCard" alignment="CENTER">
+         <HBox fx:id="expiringRecipeContainer" styleClass="recommendationContainer" minHeight="180" />
+         <TextArea fx:id="expiringRecipeText" styleClass="recommendationText" maxHeight="105.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
+      </HBox>
+      <HBox styleClass="recommendationCard" alignment="CENTER">
+         <HBox fx:id="oldRecipeContainer" styleClass="recommendationContainer" minHeight="180" />
+         <TextArea fx:id="oldRecipeText" styleClass="recommendationText" maxHeight="105.0" maxWidth="240.0" text="" wrapText="true" editable="false"/>
+      </HBox>
+   </children>
+</VBox>
