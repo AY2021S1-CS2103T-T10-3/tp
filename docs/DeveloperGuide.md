@@ -1397,9 +1397,31 @@ having expiry dates in December 2020.
 1. Adding an ingredient without quantity, expiry date and tags.
    1. Prerequisites: None.
 
+    1. Test Case: `add ingredient duck`.    
+       Expected: The ingredient `duck` with quantity `1` is added to the ingredient list. No expiry date and tags should be shown when viewing the recipe.
+       
+
 1. Adding an ingredient
    1. Prerequisites: None. 
    
+    1. Test Case: `add ingredient duck /qty 2kg`.    
+       Expected: The ingredient `duck` with quantity `2kg` is added to the ingredient list. No expiry date and tags should be shown when viewing the recipe.
+ 
+    1. Test Case: `add ingredient duck /qty 2ounce`.    
+       Expected: An error is given in the command output box as the unit is not known.
+
+    1. Test Case: `add ingredient duck /expiry 2021-12-12`. 
+       Expected: The ingredient `duck` with quantity `1` and expiry date `2021-12-12` is added to the ingredient list. No tags should be shown when viewing the recipe.       
+       
+    1. Test Case: `add ingredient duck /tag poultry`. 
+       Expected: The ingredient `duck` with quantity `1` and tag `poultry` is added to the ingredient list. No expiry date should be shown when viewing the recipe.      
+
+    1. Test Case: `add ingredient duck /expiry 2021-12-12 /tag poultry`. 
+       Expected: The ingredient `duck` with quantity `1`, expiry date `2021-12-12` and tag `poultry` is added to the ingredient list.    
+       
+    1. Test Case: `add ingredient duck /qty 2kg /expiry 2021-12-12 /tag poultry`. 
+       Expected: The ingredient `duck` with quantity `2kg`, expiry date `2021-12-12` and tag `poultry` is added to the ingredient list.                   
+         
 #### B.3.2&ensp;Deleting ingredients  
 1. Deleting an ingredient using ingredient index
    1. Prerequisites: None. 
