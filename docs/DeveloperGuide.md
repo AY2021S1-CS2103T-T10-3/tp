@@ -1148,94 +1148,94 @@ testers are expected to do more *exploratory* testing.
    1. Test Case: `list recipe` followed by `list ingredient` followed by pressing the <kbd>↑</kbd> twice. 
       Expected: `list ingredient` appears in the command box, before `list recipe` appears in the command box with the caret after the last char of the text in both cases.
       
-   1. Test Case: `list recipe` followed by `list ingredient` followed by pressing the <kbd>↑</kbd> key twice, then the <kbd>↓</kbd> key. 
+   1. Test Case: `list recipe` followed by `list ingredient` followed by pressing the <kbd>↑</kbd> key twice, then the <kbd>↓</kbd> key.  
       Expected: `list ingredient`, then `list recipe` appears in the command box before being replaced by `list ingredient` with the caret after the last char of the text in all cases.
 
 #### B.1.3&ensp;Autocomplete input
 1. Autocomplete command
    1. Prerequisites: None.
    
-   1. Test Case: Pressing the <kbd>tab</kbd> key.
+   1. Test Case: Pressing the <kbd>tab</kbd> key.  
       Expected: Command box remains empty.
    
-   1. Test Case: Typing `l` followed by pressing the <kbd>tab</kbd> key.
+   1. Test Case: Typing `l` followed by pressing the <kbd>tab</kbd> key.  
       Expected: `list` appears in the command box with the caret after the last char of the text.
 
 1. Autocomplete command target
    1. Prerequisites: None.
    
-   1. Test Case: Pressing the <kbd>tab</kbd> key.
+   1. Test Case: Pressing the <kbd>tab</kbd> key.  
       Expected: Command box remains empty.
    
-   1. Test Case: Typing `l` followed by pressing the <kbd>tab</kbd> key, then `r` before pressing <kbd>tab</kbd>.
+   1. Test Case: Typing `l` followed by pressing the <kbd>tab</kbd> key, then `r` before pressing <kbd>tab</kbd>.  
       Expected: `list recipe ` appears in the command box with the caret after the last char of the text.
 
 1. Autocomplete user defined parameters without recipes and ingredients
    1. Prerequisites: No recipes in ChopChop. In this section, we will start off with `view recipe ` in the command box.
    
-   1. Test Case: Pressing the <kbd>tab</kbd> key.
+   1. Test Case: Pressing the <kbd>tab</kbd> key.  
       Expected: Command box remains empty.
    
-   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd>.
+   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd>.  
       Expected: `view recipe ` remains in the command box with the caret 1 en space after the last char of the text.
       
 1. Autocomplete user defined parameters
-   1. Prerequisites: Only 3 recipes `apple pie`, `apple slices` and `apple juice` starting with the letter `a` in ChopCHop. In this section, we will start off with `view recipe ` in the command box.
+   1. Prerequisites: Only 3 recipes `apple pie`, `apple slices` and `apple juice` starting with the letter `a` in ChopChop. In this section, we will start off with `view recipe ` in the command box.
    
-   1. Test Case: Pressing the <kbd>tab</kbd> key.
+   1. Test Case: Pressing the <kbd>tab</kbd> key.  
       Expected: Command box remains empty.
    
-   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd>.
+   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd>.  
       Expected: `view recipe apple pie ` appears in the command box with the caret 1 en space after the last char of the text.
       
-   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> twice.
+   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> twice.  
       Expected: `view recipe apple juice ` appears in the command box with the caret 1 en space after the last char of the text.
       
-   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> thrice.
+   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> thrice.  
       Expected: `view recipe apple slices ` appears in the command box with the caret 1 en space after the last char of the text.
       
-   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> four times.
+   1. Test Case: Typing `a` followed by pressing <kbd>tab</kbd> four times.  
       Expected: `view recipe apple pie ` appears in the command box with the caret 1 en space after the last char of the text.
  
 #### B.1.4&ensp;Undo commands previously entered
 1. Undoing an undoable command
    1. Prerequisites: None.
    
-   1. Test Case: `add recipe duck rice` followed by `undo`.
+   1. Test Case: `add recipe duck rice` followed by `undo`.  
       Expected: The added recipe is removed. The command output box shows details of the undone command.        
       
-   1. Test Case: `add recipe duck rice` followed by `add recipe duck soup`, then `undo` twice.
+   1. Test Case: `add recipe duck rice` followed by `add recipe duck soup`, then `undo` twice.  
       Expected: The added recipes are removed. The command output box shows details of the second undone command.              
       
 1. Undoing an command that cannot be undone
    1. Prerequisites: No commands entered since launch.
    
-   1. Test Case: `list recipe` followed by `undo`.
+   1. Test Case: `list recipe` followed by `undo`.  
       Expected: The command output box shows an error message.       
 
 1. Undoing an command that cannot be undone with undoable commands entered before.
    1. Prerequisites: None.
    
-   1. Test Case: `add recipe duck rice` followed by `list recipe`, then `undo`.
-      Expected: The recipe `duck rice` is removed. The command output box shows details of the undone command.            
+   1. Test Case: `add recipe duck rice` followed by `list recipe`, then `undo`.  
+          Expected: The recipe `duck rice` is removed. The command output box shows details of the undone command.            
 
 #### B.1.5&ensp;Redo commands previously undone
 1. Redoing an undone command
    1. Prerequisites: None.
    
-   1. Test Case: `add recipe duck rice` followed by `undo`, then `redo`.
+   1. Test Case: `add recipe duck rice` followed by `undo`, then `redo`.  
       Expected: The `duck rice` recipe removed by the `undo` command is added. The command output box shows details of the redone command.      
       
-   1. Test Case: `add recipe duck rice` followed by `add recipe duck soup`, then `undo` twice, then `redo` twice. 
+   1. Test Case: `add recipe duck rice` followed by `add recipe duck soup`, then `undo` twice, then `redo` twice.  
       Expected: The `duck rice` and `duck soup` recipes removed by the `undo` commands are added. The command output box shows details of the second redone command. 
       
 1. Redoing when there is no undo command executed prior
    1. Prerequisites: No undo command executed since launch, or all undoable commands have been redone.
    
-   1. Test Case: `add recipe duck rice` followed by `redo`.
+   1. Test Case: `add recipe duck rice` followed by `redo`.  
       Expected: The command output box shows an error message.      
       
-1. Test Case: `add recipe duck rice` followed by `undo`, then `redo`, and then `redo`.
+   1. Test Case: `add recipe duck rice` followed by `undo`, then `redo`, and then `redo`.  
       Expected: The `duck rice` recipe removed by the `undo` command is added after the first `redo`.  The command output box shows an error message after the second redo.             
       
 ### B.2&ensp;Managing Recipes
@@ -1243,59 +1243,153 @@ testers are expected to do more *exploratory* testing.
 #### B.2.1&ensp;Adding recipes  
 1. Adding a recipe without ingredients, steps and tags
    1. Prerequisites: None.
+   
+   1. Test Case: `add recipe duck rice`.  
+      Expected: The recipe `duck rice` is added to the recipe list. No ingredients, steps and tags should be shown when viewing the recipe.
 
 1. Adding a recipe
    1. Prerequisites: None. 
-   
+
+   1. Test Case: `add recipe duck rice /ingredient duck`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No steps and tags should be shown; the ingredient with quantity in brackets `duck (1)` is shown when viewing the recipe.
+    
+   1. Test Case: `add recipe duck rice /ingredient duck /qty 2kg`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No steps and tags should be shown; the ingredient with quantity in brackets `duck (2kg)` is shown when viewing the recipe.
+
+   1. Test Case: `add recipe duck rice /step add water to pot /step boil water`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No ingredients and tags should be shown; the steps `add water` and `boil water` are shown when viewing the recipe.
+
+   1. Test Case: `add recipe duck rice /tag halal /tag poultry`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No ingredients and steps should be shown; the tags `halal` and `poultry` are shown when viewing the recipe.
+       
+   1. Test Case: `add recipe duck rice /ingredient duck /qty 2kg /step add water to pot /step boil water`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No tags should be shown; the ingredient with quantity in brackets `duck (2kg)`, and steps `add water` and `boil water` are shown when viewing the recipe.
+
+   1. Test Case: `add recipe duck rice /ingredient duck /qty 2kg /tag halal`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No steps should be shown; the ingredient with quantity in brackets `duck (2kg)`, and tag `halal` are shown when viewing the recipe.
+      
+   1. Test Case: `add recipe duck rice /step add water to pot /step boil water /tag halal`.  
+       Expected: The recipe `duck rice` is added to the recipe list. No ingredients should be shown; the steps `add water` and `boil water`, and tag `halal` are shown when viewing the recipe.
+
+   1. Test Case: `add recipe duck rice /ingredient duck /qty 2kg /step add water to pot /step boil water /tag halal`.  
+       Expected: The recipe `duck rice` is added to the recipe list. The ingredient with quantity in brackets `duck (2kg)`, steps `add water` and `boil water`, and tag `halal` are shown when viewing the recipe.
+ 
 #### B.2.2&ensp;Deleting recipes  
 1. Deleting a recipe using recipe index
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop.
+   
+   1. Test Case: `delete recipe #1`.  
+      Expected: The recipe `Apple Tart` is deleted from the recipe list.
 
 1. Deleting a recipe using recipe index in a filtered list
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+   
+   1. Test Case: `find recipe banana` followed by `delete recipe #1`.  
+      Expected: The recipe `Sweet Banana Salad` is deleted from the recipe list.
+      
+   1. Test Case: `find recipe banana` followed by `delete recipe #1`, then `undo`, then `find recipe banana` before `delete recipe #1`.  
+      Expected: The recipe `Banana Smoothie` is deleted from the recipe list.      
    
 1. Deleting a recipe using recipe name
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `delete recipe Apple Tart`.  
+      Expected: The recipe `Apple Tart` is deleted from the recipe list.
 
 #### B.2.3&ensp;Editing recipes  
 1. Editing a recipe using recipe index
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `edit recipe #1 /name Apple Tarts`.  
+      Expected: The recipe `Apple Tart` is renamed to `Apple Tarts`. \  
 
 1. Editing a recipe using recipe index in a filtered list
-   1. Prerequisites: None. 
+    1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
    
-1. Editing a recipe using recipe name
-   1. Prerequisites: None. 
+    1. Test Case: `find recipe banana`, followed by `edit recipe #1 /ingredient:add Raisins /qty 5`.  
+       Expected: The ingredient with quantity in brackets `Raisins (5)` is added to the recipe `Sweet Banana Salad`.
 
+    1. Test Case: `find recipe banana`, followed by `edit recipe #1 /ingredient:edit Banana /qty 3`.  
+       Expected: The ingredient with quantity in brackets `Banana (2)` is changed to `Banana (3)` in the recipe `Sweet Banana Salad`.   
+
+    1. Test Case: `find recipe banana`, followed by `edit recipe #1 /ingredient:delete Banana`.  
+       Expected: The ingredient with quantity in brackets `Banana (2)` is removed from the recipe `Sweet Banana Salad`.
+    
+1. Editing a recipe using recipe name
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `edit recipe Apple Tart /tag:add vegetarian`.  
+      Expected: The tag `vegetarian` is added to the recipe `Apple Tart`.
+       
+   1. Test Case: `edit recipe Apple Tart /step:delete:1`.  
+      Expected: The step `Cut the banana and put it into a bowl` is removed from the recipe `Apple Tart`.
+      
+   1. Test Case: `edit recipe Apple Tart /step:add Mash the bananas`.  
+      Expected: The step `Mash the bananas` is added to the end of the existing steps of the recipe `Apple Tart`.      
+ 
+   1. Test Case: `edit recipe Apple Tart /step:edit:1 Put the bananas in a bowl`.  
+      Expected: The step `Cut the banana and put it into a bowl` is changed to `Put the bananas in a bowl` in the recipe `Apple Tart`.   
+      
 #### B.2.4&ensp;Listing recipes  
 1. Listing recipes
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `list recipe`.  
+      Expected: All 6 recipes from ChopChop's sample data are to be displayed.
 
 1. Listing filtered recipes
-   1. Prerequisites: None. 
+    1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+   
+    1. Test Case: `find recipe banana`.   
+       Expected: The recipes `Sweet Banana Salad` and `Banana Smoothie` are to be displayed. 
    
 1. Listing recipe recommendations
-  1. Prerequisites: None. 
+    1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+   
+    1. Test Case: `list recommendation`.   
+       Expected: All 6 recipes from ChopChop's sample data are to be displayed.
+       
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The recommendations displayed might differ due to the sample ingredients of ChopChop
+having expiry dates in December 2020.
+</div>
   
 #### B.2.5&ensp;Viewing recipes   
 1. Viewing a recipe using recipe index
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `view recipe #1`.  
+      Expected: The recipe `Apple Tart` is displayed.
 
 1. Viewing a recipe using recipe index in a filtered list
-   1. Prerequisites: None. 
+    1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+   
+    1. Test Case: `find recipe banana` followed by `view recipe #1`.  
+       Expected: The recipe `Sweet Banana Salad` is displayed. 
    
 1. Viewing a recipe using recipe name
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `view recipe Apple Tart`.  
+      Expected: The recipe `Apple Tart` is displayed.
    
 #### B.2.6&ensp;Making recipes   
 1. Making a recipe using recipe index
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+
+   1. Test Case: `make recipe #1`.  
+      Expected: The recipe `Apple Tart` is made. The command output box shows details of the command. 
 
 1. Making a recipe using recipe index in a filtered list
-   1. Prerequisites: None. 
+    1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop. 
+   
+    1. Test Case: `find recipe banana` followed by `make recipe #1`.  
+       Expected: The recipe `Sweet Banana Salad` is made. The command output box shows details of the command.  
    
 1. Making a recipe using recipe name
-   1. Prerequisites: None. 
+   1. Prerequisites: There are recipes in the recipe list. For this section, we will be using the sample data of ChopChop.  
+
+   1. Test Case: `make recipe Apple Tart`.  
+      Expected: The recipe `Apple Tart` is made. The command output box shows details of the command.
 
 ### B.3&ensp;Managing Ingredients
 
